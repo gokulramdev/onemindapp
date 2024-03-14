@@ -55,7 +55,7 @@ const Login = ({ navigation }: any) => {
                         />
                     </View>
                     <View style={{ justifyContent: 'flex-end', alignItems: 'center' }}>
-                        <Pressable onPress={() => navigation.navigate('forgotpassword')}>
+                        <Pressable onPress={() => navigation.navigate('forgotPassword')}>
                             <Text
                                 style={{
                                     fontSize: 14,
@@ -74,7 +74,7 @@ const Login = ({ navigation }: any) => {
                         marginTop: 18,
                         marginBottom: 4,
                     }}
-                    onPress={() => navigation.navigate('Main')}
+                    onPress={() => navigation.navigate('home')}
                 />
 
                 <View
@@ -117,7 +117,7 @@ const Login = ({ navigation }: any) => {
                     <Text style={{ fontSize: 16, color: COLORS.black }}>
                         Don’t have an account ?
                     </Text>
-                    <Pressable onPress={() => navigation.navigate('Signup')}>
+                    <Pressable onPress={() => navigation.navigate('register')}>
                         <Text
                             style={{
                                 fontSize: 16,

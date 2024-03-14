@@ -32,12 +32,12 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Register" component={Signup} />
-          <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+          <Stack.Screen name="login" component={Login} />
+          <Stack.Screen name="register" component={Signup} />
+          <Stack.Screen name="forgotPassword" component={ForgotPassword} />
           <Stack.Screen name="newpassword" component={NewPassword} />
           <Stack.Screen
-            name="Main"
+            name="home"
             component={() => (
               <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />} screenOptions={{ headerShown: false }}>
                 <Drawer.Screen name="HomeTabs" component={AppTabNav} />

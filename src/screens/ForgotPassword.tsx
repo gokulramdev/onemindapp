@@ -61,7 +61,7 @@ const ForgotPassword = ({ navigation }: any) => {
                     <Text style={{ fontSize: 16, color: COLORS.black }}>
                         Just remember?
                     </Text>
-                    <Pressable onPress={() => navigation.navigate('Signup')}>
+                    <Pressable onPress={() => navigation.navigate('login')}>
                         <Text
                             style={{
                                 fontSize: 16,

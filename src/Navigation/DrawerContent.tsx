@@ -1,46 +1,32 @@
 
 
 
-import React, { useMemo } from 'react';
-import { View, Text, Button } from 'react-native';
+import React, { useCallback, useMemo } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 
 const DrawerContent = ({ navigation }: any) => {
 
-    const menuList = useMemo(() => [
-        {
-            label: 'Home',
-            screenName: "profileScreen"
-        },
-        {
-            label: 'News',
-            screenName: "profileScreen"
-        },
-        {
-            label: 'Live telecast',
-            screenName: "profileScreen"
-        },
-        {
-            label: 'Contact us',
-            screenName: "profileScreen"
-        },
-        {
-            label: 'Profile',
-            screenName: "profileScreen"
-        },
-        {
-            label: 'Visit Website',
-            screenName: "profileScreen"
-        },
-        {
-            label: 'Logout',
-            screenName: "profileScreen"
-        },
-    ], []);
+    const navigateTo = useCallback((path: string) => {
+        navigation.navigate(path)
+    }, [])
 
     return (
         <View>
-            <Text>Drawer Content</Text>
-            <Button onPress={() => navigation.closeDrawer()} title="Close Drawer" />
+            <TouchableOpacity onPress={() => navigateTo("home")}>
+                <Text>Home</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigateTo("news")}>
+                <Text>News</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigateTo("events")}>
+                <Text>Live telecast</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigateTo("contact")}>
+                <Text>Contact us</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigateTo("profile")}>
+                <Text>Profile</Text>
+            </TouchableOpacity>
         </View>
     );
 }

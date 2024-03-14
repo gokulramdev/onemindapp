@@ -33,7 +33,7 @@ const AppTabNav = () => {
                 height: 90,
             },
         }}>
-            <Tab.Screen name="Home" component={withCustomHeader(HomeScreen)}
+            <Tab.Screen name="home" component={withCustomHeader(HomeScreen)}
                 options={{
                     tabBarLabel: () => null,
                     tabBarIcon: (iconProps) => (
@@ -43,7 +43,7 @@ const AppTabNav = () => {
                     )
                 }}
             />
-            <Tab.Screen name="News" component={withCustomHeader(LatestNews)}
+            <Tab.Screen name="news" component={withCustomHeader(LatestNews)}
                 options={{
                     tabBarLabel: () => null,
                     tabBarIcon: (iconProps) => (
@@ -52,7 +52,7 @@ const AppTabNav = () => {
                         />
                     )
                 }} />
-            <Tab.Screen name="Events" component={withCustomHeader(LiveTelecast)}
+            <Tab.Screen name="events" component={withCustomHeader(LiveTelecast)}
                 options={{
                     tabBarLabel: () => null,
                     tabBarIcon: (iconProps) => (
@@ -62,7 +62,7 @@ const AppTabNav = () => {
                     )
                 }} />
 
-            <Tab.Screen name="Contact" component={withCustomHeader(Contactus)}
+            <Tab.Screen name="contact" component={withCustomHeader(Contactus)}
                 options={{
                     tabBarLabel: () => null,
                     tabBarIcon: (iconProps) => (
@@ -71,7 +71,7 @@ const AppTabNav = () => {
                         </View>
                     )
                 }} />
-            <Tab.Screen name="Profile" component={withCustomHeader(Profile)}
+            <Tab.Screen name="profile" component={withCustomHeader(Profile)}
                 options={{
                     tabBarLabel: () => null,
                     tabBarIcon: (iconProps) => (
