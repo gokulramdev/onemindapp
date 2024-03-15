@@ -19,7 +19,6 @@ const CustomHeader = () => {
             <View >
                 <Image source={require('../assets/one-mind-header.png')} style={styles.logo} />
             </View>
-
         </View>
     );
 }

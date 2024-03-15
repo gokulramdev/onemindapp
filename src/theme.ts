@@ -39,17 +39,34 @@ const theme = StyleSheet.create({
   rightPadding10: {
     paddingRight: 10
   },
-
+  marginTop10: {
+    marginTop: 10
+  },
+  marginTop20: {
+    marginTop: 20
+  },
+  marginTop30: {
+    marginTop: 30
+  },
+  marginTop40: {
+    marginTop: 40
+  },
+  marginHorizontal20: {
+    marginHorizontal: 20
+  },
   textCenter: {
     textAlign: "center",
   },
-
 
   flexOne: {
     flex: 1,
   },
   contentCenter: {
     justifyContent: "center",
+  },
+  verticalCenter: {
+    alignContent: "center",
+    alignItems: "center"
   },
 
   border: {
@@ -59,8 +76,14 @@ const theme = StyleSheet.create({
   H1: {
     color: "#112211",
     fontFamily: "Inter-SemiBold",
-    fontWeight: "600",
+    fontWeight: "800",
     fontSize: 16,
+  },
+  H2: {
+    color: "#112211",
+    fontFamily: "Inter-SemiBold",
+    fontWeight: "800",
+    fontSize: 14,
   },
 });
 

@@ -2,6 +2,7 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import React from 'react';
 import { CustomButton } from '../components';
 import theme from '../theme';
+import EvilIcons from "react-native-vector-icons/EvilIcons"
 
 export default function Contactus() {
     return (
@@ -19,6 +20,8 @@ export default function Contactus() {
                         <Text>+91 9842188889</Text>
                         <Text>Social media</Text>
                         <View style={{ flexDirection: "row", margin: 10 }}>
+                            <EvilIcons name='sc-facebook' style={styles.headerIcons} />
+
                             {/* <Image source={require('../assets/vector4.png')} />
                             <Image source={require('../assets/group1.png')} />
                             <Image source={require('../assets/vector5.png')} />
@@ -57,5 +60,9 @@ const styles = StyleSheet.create({
         fontFamily: "Inter-SemiBold",
         fontWeight: "600",
         fontSize: 16,
+    },
+    headerIcons: {
+        fontSize: 28,
+        color: "#fff"
     },
 });

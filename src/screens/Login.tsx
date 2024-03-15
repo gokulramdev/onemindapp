@@ -74,7 +74,7 @@ const Login = ({ navigation }: any) => {
                         marginTop: 18,
                         marginBottom: 4,
                     }}
-                    onPress={() => navigation.navigate('home')}
+                    onPress={() => navigation.navigate('homemain')}
                 />
 
                 <View

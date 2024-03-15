@@ -28,22 +28,22 @@ const queryClient =
 const App = () => {
   useEffect(() => { setTimeout(() => SplashScreen.hide(), 1000) }, [])
 
+  const HomeScreenComponent = () => (
+    <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />} screenOptions={{ headerShown: false }}>
+      <Drawer.Screen name="HomeTabs" component={AppTabNav} />
+    </Drawer.Navigator>
+  );
+
   return (
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
+        <Stack.Navigator initialRouteName='homemain' screenOptions={{ headerShown: false, animationEnabled: false }}>
+
           <Stack.Screen name="login" component={Login} />
           <Stack.Screen name="register" component={Signup} />
           <Stack.Screen name="forgotPassword" component={ForgotPassword} />
           <Stack.Screen name="newpassword" component={NewPassword} />
-          <Stack.Screen
-            name="home"
-            component={() => (
-              <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />} screenOptions={{ headerShown: false }}>
-                <Drawer.Screen name="HomeTabs" component={AppTabNav} />
-              </Drawer.Navigator>
-            )}
-          />
+          <Stack.Screen name="homemain" component={HomeScreenComponent} />
         </Stack.Navigator>
       </NavigationContainer>
     </QueryClientProvider>

@@ -30,3 +30,28 @@ export const useGetLatestNewDetail = ({ isEnabled = false }: Props) => {
     return { getLatestNewDetailQueryHelper }
 }
 
+
+export const useGetLocation = ({ isEnabled = false }: Props) => {
+
+    const getLocationQueryHelper =
+        useQuery({
+            queryKey: ['get_location'],
+            queryFn: () => repo.getLocations(),
+            enabled: isEnabled,
+        })
+
+    return { getLocationQueryHelper }
+}
+
+
+export const useGetCategory = ({ isEnabled = false }: Props) => {
+
+    const getCategoryQueryHelper =
+        useQuery({
+            queryKey: ['get_category'],
+            queryFn: () => repo.getCategory(),
+            enabled: isEnabled,
+        })
+
+    return { getCategoryQueryHelper }
+}

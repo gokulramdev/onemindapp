@@ -1,92 +1,134 @@
-import React from 'react'
-import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import CustomHeader from './CustomHeader'
-import { CustomButton, CustomTextInput } from '../components'
+import React, { useCallback, useMemo, useState } from 'react';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { CustomButton, CustomSearchInput } from '../components';
+import _ from 'lodash';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import { useGetLocation, useGetCategory } from '../hooks/homeData';
 
-const Location = [
-    {
-        "_id": {
-            "$oid": "658a66a8fb7c4c793c9a8bc7"
-        },
-        "name": "North vellore"
-    },
-    {
-        "_id": {
-            "$oid": "658a66a8fb7c4c793c9a8bc9"
-        },
-        "name": "South vellore"
-    }
-]
 
-const Category = [
-    {
-        "_id": {
-            "$oid": "658a66a8fb7c4c793c9a8bc7"
-        },
-        "name": "Hotel",
-        "key": "6598d1ae99ff82590a42",
-        "image": "https://cloud.appwrite.io/v1/storage/buckets/6594fb42c37c28fbf4e8/files/6598d1ae99ff82590a42/view?project=658ea9568cd34371e174&mode=admin"
-    },
-    {
-        "_id": {
-            "$oid": "658a66a8fb7c4c793c9a8bc7"
-        },
-        "name": "Gym",
-        "key": "6598d1ae99ff82590a42",
-        "image": "https://cloud.appwrite.io/v1/storage/buckets/6594fb42c37c28fbf4e8/files/6598d1ae99ff82590a42/view?project=658ea9568cd34371e174&mode=admin"
-    },
-    {
-        "_id": {
-            "$oid": "658a66a8fb7c4c793c9a8bc7"
-        },
-        "name": "Hospital",
-        "key": "6598d1ae99ff82590a42",
-        "image": "https://cloud.appwrite.io/v1/storage/buckets/6594fb42c37c28fbf4e8/files/6598d1ae99ff82590a42/view?project=658ea9568cd34371e174&mode=admin"
-    }
-]
 
 
 export default function HomeScreen() {
-
-    const renderItem = ({ item }: any) => (
-        <TouchableOpacity onPress={() => handlePress(item)}>
-            <View style={{ padding: 10 }}>
-                <Text>{item.name}</Text>
-            </View>
-        </TouchableOpacity>
-    );
-
-    const handlePress = (item: any) => {
-        // Handle press event for each item here
-        console.log('Item clicked:', item.title);
-    };
+    // Local state for the component
+    const [location, setLocation] = useState('');
+    const [category, setCategory] = useState('');
+    const [showLocationList, setShowLocationList] = useState(false);
+    const [showCategoryList, setShowCategoryList] = useState(false);
 
 
+    // Api call hooks
+    const { getLocationQueryHelper } = useGetLocation({ isEnabled: true })
+    const { getCategoryQueryHelper } = useGetCategory({ isEnabled: true })
+
+
+    // start search filter function and list
+    const filterLocation = useMemo(() => {
+        return _.filter(getLocationQueryHelper?.data, (loaction: { name: string }) => {
+            return _.includes(_.toLower(loaction?.name), _.toLower(location));
+        });
+    }, [getLocationQueryHelper?.data, location]);
+
+    const filterCategory = useMemo(() => {
+        return _.filter(getCategoryQueryHelper?.data, (_category: { name: string }) => {
+            return _.includes(_.toLower(_category?.name), _.toLower(category));
+        });
+    }, [getCategoryQueryHelper?.data, category]);
+
+    // End start search filter function and list
+
+
+
+    // Start List render item for the ui
+    const renderCategoryItem = useCallback(({ item }: any) => {
+        return (
+            <TouchableOpacity
+                onPress={() => {
+                    setCategory(item.name), setShowCategoryList(false);
+                }}>
+                <View style={{ padding: 10 }} key={item?._id?.$oid}>
+                    <Text>{item.name}</Text>
+                </View>
+            </TouchableOpacity>
+        );
+    }, []);
+
+    const renderLoactionItem = useCallback(({ item }: any) => {
+        return (
+            <TouchableOpacity
+                onPress={() => {
+                    setLocation(item.name), setShowLocationList(false);
+                }}>
+                <View style={{ padding: 10 }} key={item?._id?.$oid}>
+                    <Text>{item.name}</Text>
+                </View>
+            </TouchableOpacity>
+        );
+    }, []);
+
+    // End List render item for the ui
 
     return (
-
         <View style={{ marginHorizontal: 12 }}>
-            <CustomTextInput
+            <CustomSearchInput
                 placeholder="Select Location"
+                onChangeText={setLocation}
+                value={location}
+                onFocus={() => { setShowLocationList(true), setShowCategoryList(false) }}
+                iconPrimary={
+                    <Ionicons name="location-sharp" style={styles.iconsPrimary} />
+                }
+                iconSecondary={
+
+                    <TouchableOpacity
+                        onPress={() => setShowLocationList(!setShowLocationList)}
+                        style={styles.iconsSecondary}
+                    >
+                        <Ionicons
+                            name={showCategoryList ? 'chevron-up' : 'chevron-down'}
+                            style={styles.iconSize}
+                        />
+                    </TouchableOpacity>
+                }
             />
-            <View style={styles.searchresult}>
-                <FlatList
-                    data={Location}
-                    renderItem={renderItem}
-                    keyExtractor={item => item?._id?.$oid}
-                />
-            </View>
-            <CustomTextInput
+            {showLocationList && (
+                <View style={styles.searchresult}>
+                    <FlatList
+                        data={filterLocation}
+                        renderItem={renderLoactionItem}
+                        keyExtractor={item => item?._id?.$oid}
+                    />
+                </View>
+            )}
+
+            <CustomSearchInput
                 placeholder="Select category"
+                onChangeText={setCategory}
+                value={category}
+                onFocus={() => { setShowCategoryList(true), setShowLocationList(false) }}
+                iconPrimary={<FontAwesome6 name="city" style={styles.iconsPrimary} />}
+                iconSecondary={
+                    <TouchableOpacity
+                        onPress={() => setShowCategoryList(!showCategoryList)}
+                        style={styles.iconsSecondary}
+                    >
+                        <Ionicons
+                            name={showCategoryList ? 'chevron-up' : 'chevron-down'}
+                            style={styles.iconSize}
+                        />
+                    </TouchableOpacity>
+                }
             />
-            <View style={styles.searchresult}>
-                <FlatList
-                    data={Category}
-                    renderItem={renderItem}
-                    keyExtractor={item => item?._id?.$oid}
-                    showsVerticalScrollIndicator
-                />
-            </View>
+            {showCategoryList && (
+                <View style={styles.searchresult}>
+                    <FlatList
+                        data={filterCategory}
+                        renderItem={renderCategoryItem}
+                        keyExtractor={item => item?._id?.$oid}
+                        showsVerticalScrollIndicator
+                    />
+                </View>
+            )}
             <CustomButton
                 title="Search Now"
                 filled
@@ -94,10 +136,10 @@ export default function HomeScreen() {
                     marginTop: 18,
                     marginBottom: 4,
                 }}
-                onPress={() => console.log("je")}
+                onPress={() => { setShowCategoryList(false), setShowLocationList(false) }}
             />
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -105,11 +147,27 @@ const styles = StyleSheet.create({
         borderColor: '#8692A6',
         borderWidth: 1,
         borderRadius: 1,
-        color: "#112211",
-        fontFamily: "Inter-SemiBold",
-        fontWeight: "600",
+        color: '#112211',
+        fontFamily: 'Inter-SemiBold',
+        fontWeight: '600',
         fontSize: 16,
-        maxHeight: 200
+        maxHeight: 200,
     },
-});
+    iconsPrimary: {
+        position: 'absolute',
+        left: 8,
+        top: '50%',
+        fontSize: 22,
+        color: "#000"
 
+    },
+    iconsSecondary: {
+        position: 'absolute',
+        right: 8,
+        top: '52%',
+    },
+    iconSize: {
+        fontSize: 22,
+        color: "#000"
+    }
+});
