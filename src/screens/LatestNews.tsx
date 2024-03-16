@@ -1,5 +1,5 @@
-import { View, Text, Image, StyleSheet } from 'react-native'
-import React from 'react'
+import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
+import React, { useCallback } from 'react'
 import theme from '../theme'
 
 const news_data = [
@@ -32,18 +32,46 @@ const news_data = [
     }
 ]
 export default function LatestNews() {
+
+    // Start List render item for the ui
+    const renderCategoryItem = useCallback(({ item }: any) => {
+        return (
+            <TouchableOpacity
+                onPress={() => { }}>
+                <View style={styles.newscard} key={item?._id?.$oid}>
+                    <View style={{ flex: 1, marginRight: 12 }}>
+                        <Text style={[theme.H2]} numberOfLines={2} ellipsizeMode='tail'>
+                            {item?.title}
+                        </Text>
+                        <Text>Vellore Mon 26 Feb 7:45:26PM</Text>
+                    </View>
+                    <View>
+                        <Image
+                            source={{ uri: item?.image }}
+                            style={styles.image}
+                        />
+                    </View>
+                </View>
+            </TouchableOpacity>
+        );
+    }, []);
+
     return (
         <View style={{ flex: 1, marginHorizontal: 10 }}>
             <View>
                 <Text style={[theme.H1, theme.textCenter]}>Latest news</Text>
             </View>
+            <View style={styles.container}>
+
+                <FlatList
+                    data={news_data}
+                    renderItem={renderCategoryItem}
+                    keyExtractor={item => item?._id?.$oid}
+                    showsVerticalScrollIndicator
+                />
+            </View>
+
         </View>
-        // <View style={styles.container}>
-        //     <Image
-        //         source={{ uri: "https://cloud.appwrite.io/v1/storage/buckets/6594fb42c37c28fbf4e8/files/6598d1ae99ff82590a42/view?project=658ea9568cd34371e174&mode=admin" }} // Replace 'https://example.com/image.jpg' with your image URL
-        //         style={styles.image}
-        //     />
-        // </View>
     )
 }
 
@@ -52,8 +80,14 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     image: {
-        width: 200,
-        height: 200,
-        resizeMode: 'cover', // Adjust the resizeMode according to your preference
+        width: 60,
+        height: 60,
+        resizeMode: 'cover',
     },
+    newscard: {
+        padding: 10,
+        flexDirection: "row",
+        marginBottom: 4
+    }
+
 });

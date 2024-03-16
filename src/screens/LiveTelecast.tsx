@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet } from 'react-native'
+import { View, Text, Image, StyleSheet, Dimensions } from 'react-native'
 import React from 'react'
 import theme from '../theme'
 import Entypo from "react-native-vector-icons/Entypo"
@@ -7,6 +7,8 @@ import WebView from 'react-native-webview';
 
 
 export default function LiveTelecast() {
+    const { width, height } = Dimensions.get('window')
+
     return (
         <View style={theme.marginHorizontal20}>
             <View>
@@ -23,47 +25,10 @@ export default function LiveTelecast() {
                     <Entypo name="share" style={{ fontSize: 24, color: "#000" }} />
                 </View>
             </View>
-            <View >
+            <View style={theme.marginTop20}>
                 <YouTube
-                    videoId="VMpjeNW48eY"
-                    height={200}
-                    width={300}
-                />
-            </View>
-            <View style={styles.streamingCard}>
-                <View style={[theme.flexOne, { alignContent: "center" }]}>
-
-                    <Text style={[theme.H2]}>England Wins World Cup 2029</Text>
-                    <Text>Vellore Mon 26 Feb 7:45:26PM</Text>
-                </View>
-                <View style={{ justifyContent: "center" }}>
-
-                    <Entypo name="share" style={{ fontSize: 24, color: "#000" }} />
-                </View>
-            </View>
-            <View >
-                <YouTube
-                    videoId="VMpjeNW48eY"
-                    height={200}
-                    width={300}
-                />
-            </View>
-            <View style={styles.streamingCard}>
-                <View style={[theme.flexOne, { alignContent: "center" }]}>
-
-                    <Text style={[theme.H2]}>England Wins World Cup 2029</Text>
-                    <Text>Vellore Mon 26 Feb 7:45:26PM</Text>
-                </View>
-                <View style={{ justifyContent: "center" }}>
-
-                    <Entypo name="share" style={{ fontSize: 24, color: "#000" }} />
-                </View>
-            </View>
-            <View >
-                <YouTube
-                    videoId="VMpjeNW48eY"
-                    height={200}
-                    width={300}
+                    videoId="w7ejDZ8SWv8"
+                    height={height * 0.4}
                 />
             </View>
         </View>
