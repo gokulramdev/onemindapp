@@ -1,5 +1,4 @@
-import DrawerContent from "./DrawerContent";
-import AppTabNav from "./AppTabNav"
 
+import StackNav from "./StackNav";
 
-export {DrawerContent,AppTabNav}
+export { StackNav }

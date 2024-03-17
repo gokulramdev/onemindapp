@@ -8,6 +8,9 @@ import LiveTelecast from "./LiveTelecast";
 import Profile from "./Profile";
 import UserView from "./UserView";
 import Contactus from "./Contactus";
+import LatestNewsDetail from "./LatestNewsDetail";
+import OtpScreen from "./OtpScreen";
+import ChangePassword from "./ChangePassword"
 
 export {
     Login,
@@ -19,5 +22,8 @@ export {
     LiveTelecast,
     Profile,
     UserView,
-    Contactus
+    Contactus,
+    LatestNewsDetail,
+    OtpScreen,
+    ChangePassword
 }

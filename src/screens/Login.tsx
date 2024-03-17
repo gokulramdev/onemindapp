@@ -2,14 +2,26 @@ import {
     View,
     Text,
     Pressable,
-    SafeAreaView,
+    SafeAreaView
 } from 'react-native';
 import React, { useState } from 'react';
 import COLORS from '../constants/colors';
 import { CustomButton, CustomCheckBox, CustomPasswordInput, CustomTextInput } from "../components"
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 const Login = ({ navigation }: any) => {
     const [isChecked, setIsChecked] = useState(false);
+
+    const saveToken = async (token: any) => {
+        try {
+            await AsyncStorage.setItem('auth_token', "token");
+        } catch (error) {
+            console.error('Error saving token to AsyncStorage:', error);
+        }
+    };
+
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>

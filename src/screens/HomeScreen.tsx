@@ -1,15 +1,17 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { CustomButton, CustomSearchInput } from '../components';
 import _ from 'lodash';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { useGetLocation, useGetCategory } from '../hooks/homeData';
+import { useNavigation } from '@react-navigation/native';
 
 
 
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }: any) {
+
     // Local state for the component
     const [location, setLocation] = useState('');
     const [category, setCategory] = useState('');
@@ -67,6 +69,12 @@ export default function HomeScreen() {
     }, []);
 
     // End List render item for the ui
+
+
+    useEffect(() => {
+        setShowLocationList(false)
+        setShowCategoryList(false)
+    }, []);
 
     return (
         <View style={{ marginHorizontal: 12 }}>
@@ -136,7 +144,13 @@ export default function HomeScreen() {
                     marginTop: 18,
                     marginBottom: 4,
                 }}
-                onPress={() => { setShowCategoryList(false), setShowLocationList(false) }}
+                onPress={() => {
+                    setShowCategoryList(false)
+                    setShowLocationList(false)
+                    navigation.navigate({
+                        name: "userview"
+                    })
+                }}
             />
         </View>
     );

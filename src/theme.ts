@@ -15,7 +15,12 @@ const FONT_FAMILY = {
 
 
 const theme = StyleSheet.create({
-
+  primary: {
+    color: "#FF3131"
+  },
+  textColor: {
+    color: "#112211"
+  },
   link: {
     textDecorationLine: 'underline',
     color: 'blue'
@@ -38,6 +43,9 @@ const theme = StyleSheet.create({
   },
   rightPadding10: {
     paddingRight: 10
+  },
+  marginTop5: {
+    marginTop: 5
   },
   marginTop10: {
     marginTop: 10
@@ -71,7 +79,7 @@ const theme = StyleSheet.create({
 
   border: {
     borderWidth: 1,
-    borderColor: "#000",
+    borderColor: "#F2F2F2",
   },
   H1: {
     color: "#112211",
@@ -85,6 +93,7 @@ const theme = StyleSheet.create({
     fontWeight: "800",
     fontSize: 14,
   },
+
 });
 
 export default theme;

@@ -1,18 +1,10 @@
 import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import {
-  Login, Signup, ForgotPassword, NewPassword,
-} from "./src/screens";
-import { DrawerContent, AppTabNav } from "./src/Navigation"
 import SplashScreen from 'react-native-splash-screen';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { StackNav } from './src/Navigation';
 
-
-const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator();
 
 const queryClient =
   new QueryClient({
@@ -26,25 +18,15 @@ const queryClient =
 
 
 const App = () => {
+
+  // splashScreen automatic close
   useEffect(() => { setTimeout(() => SplashScreen.hide(), 1000) }, [])
 
-  const HomeScreenComponent = () => (
-    <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />} screenOptions={{ headerShown: false }}>
-      <Drawer.Screen name="HomeTabs" component={AppTabNav} />
-    </Drawer.Navigator>
-  );
 
   return (
     <QueryClientProvider client={queryClient}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName='homemain' screenOptions={{ headerShown: false, animationEnabled: false }}>
-
-          <Stack.Screen name="login" component={Login} />
-          <Stack.Screen name="register" component={Signup} />
-          <Stack.Screen name="forgotPassword" component={ForgotPassword} />
-          <Stack.Screen name="newpassword" component={NewPassword} />
-          <Stack.Screen name="homemain" component={HomeScreenComponent} />
-        </Stack.Navigator>
+        <StackNav />
       </NavigationContainer>
     </QueryClientProvider>
 

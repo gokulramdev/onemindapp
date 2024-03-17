@@ -31,13 +31,13 @@ const news_data = [
         "image": "https://cloud.appwrite.io/v1/storage/buckets/6594fb42c37c28fbf4e8/files/6598d1ae99ff82590a42/view?project=658ea9568cd34371e174&mode=admin"
     }
 ]
-export default function LatestNews() {
+export default function LatestNews({ navigation }: any) {
 
     // Start List render item for the ui
     const renderCategoryItem = useCallback(({ item }: any) => {
         return (
             <TouchableOpacity
-                onPress={() => { }}>
+                onPress={() => { navigation.navigate("latestnewsdetail") }}>
                 <View style={styles.newscard} key={item?._id?.$oid}>
                     <View style={{ flex: 1, marginRight: 12 }}>
                         <Text style={[theme.H2]} numberOfLines={2} ellipsizeMode='tail'>

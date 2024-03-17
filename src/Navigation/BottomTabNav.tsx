@@ -1,17 +1,27 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Contactus, LiveTelecast, LatestNews, Profile, UserView, HomeScreen } from "../screens";
+import { Contactus, LiveTelecast, LatestNews, Profile, UserView, HomeScreen, LatestNewsDetail, ChangePassword } from "../screens";
 import CustomHeader from "../screens/CustomHeader";
 import { StyleSheet, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import Entypo from "react-native-vector-icons/Entypo"
 import Feather from "react-native-vector-icons/Feather"
+import { createStackNavigator } from "@react-navigation/stack";
 
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 
-const AppTabNav = () => {
+const useView = () => {
+    return (
+        <Stack.Navigator initialRouteName='homemain' screenOptions={{ headerShown: false, animationEnabled: false }}>
+            <Stack.Screen name="userview" component={UserView} />
+        </Stack.Navigator>
+
+    )
+}
+const BottomTabNav = () => {
     return (
         <Tab.Navigator screenOptions={{
             headerShown: true,
@@ -72,21 +82,21 @@ const AppTabNav = () => {
                         </View>
                     )
                 }} />
-            {/* <Tab.Screen name="Userview" component={withCustomHeader(UserView)}
-                options={{
-                    tabBarLabel: () => null,
-                    tabBarIcon: (iconProps) => (
-                        <Image
-                            source={require('../assets/News.png')}
-                        />
-                    )
-                }} /> */}
+            <Tab.Screen name="userview" component={UserView}
+                options={{ tabBarLabel: () => null, tabBarButton: () => null, header: () => null }}
+            />
+            <Tab.Screen name="latestnewsdetail" component={LatestNewsDetail}
+                options={{ tabBarLabel: () => null, tabBarButton: () => null, header: () => null }}
+            />
+            <Tab.Screen name="changepassword" component={ChangePassword}
+                options={{ tabBarLabel: () => null, tabBarButton: () => null, header: () => null }}
+            />
 
         </Tab.Navigator>
     )
 };
 
-export default AppTabNav
+export default BottomTabNav
 
 
 const styles = StyleSheet.create({

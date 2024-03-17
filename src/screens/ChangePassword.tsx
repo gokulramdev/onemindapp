@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import COLORS from '../constants/colors';
 import { CustomButton, CustomCheckBox, CustomPasswordInput, CustomTextInput } from "../components"
 
-const NewPassword = ({ navigation }: any) => {
+const ChangePassword = ({ navigation }: any) => {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -33,6 +33,10 @@ const NewPassword = ({ navigation }: any) => {
                     </Text>
                 </View>
                 <CustomPasswordInput
+                    label="Current password"
+                    placeholder="Enter current password"
+                />
+                <CustomPasswordInput
                     label="Create new password"
                     placeholder="Enter your password"
                 />
@@ -49,37 +53,9 @@ const NewPassword = ({ navigation }: any) => {
                         marginBottom: 4,
                     }}
                 />
-
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                    }}></View>
-
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        marginVertical: 22,
-                    }}>
-                    <Text style={{ fontSize: 16, color: COLORS.black }}>
-                        Just remember?
-                    </Text>
-                    <Pressable onPress={() => navigation.navigate('login')}>
-                        <Text
-                            style={{
-                                fontSize: 16,
-                                color: COLORS.primary,
-                                fontWeight: '600',
-                                marginLeft: 4,
-                            }}>
-                            Login
-                        </Text>
-                    </Pressable>
-                </View>
             </View>
         </SafeAreaView>
     );
 };
 
-export default NewPassword;
+export default ChangePassword;

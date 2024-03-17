@@ -39,12 +39,13 @@ const ForgotPassword = ({ navigation }: any) => {
 
 
                 <CustomButton
-                    title="Send Recover Email"
+                    title="Send Recover Phone"
                     filled
                     style={{
                         marginTop: 18,
                         marginBottom: 4,
                     }}
+                    onPress={() => navigation.navigate("otpsreen")}
                 />
                 <View
                     style={{

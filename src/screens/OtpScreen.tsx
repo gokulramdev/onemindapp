@@ -4,11 +4,11 @@ import {
     Pressable,
     SafeAreaView,
 } from 'react-native';
-import React, { useState } from 'react';
+import React from 'react';
 import COLORS from '../constants/colors';
-import { CustomButton, CustomCheckBox, CustomPasswordInput, CustomTextInput } from "../components"
+import { CustomButton, CustomTextInput } from "../components"
 
-const NewPassword = ({ navigation }: any) => {
+const OtpScreen = ({ navigation }: any) => {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -21,7 +21,7 @@ const NewPassword = ({ navigation }: any) => {
                             marginVertical: 12,
                             color: COLORS.black,
                         }}>
-                        New Password
+                        Enter OTP
                     </Text>
 
                     <Text
@@ -29,27 +29,26 @@ const NewPassword = ({ navigation }: any) => {
                             fontSize: 16,
                             color: COLORS.black,
                         }}>
-                        Please create a new password that you don’t use on any other site.
+                        Please Enter your OTP that you don’t use on any other site.
                     </Text>
                 </View>
-                <CustomPasswordInput
-                    label="Create new password"
-                    placeholder="Enter your password"
-                />
-                <CustomPasswordInput
-                    label="Confirm new password"
-                    placeholder="confirm new password"
+                <CustomTextInput
+                    label="Enter OTP"
+                    placeholder="Enter your OTP"
+
                 />
 
+
                 <CustomButton
-                    title="Reset New Password"
+                    title="Submit OTP"
                     filled
                     style={{
                         marginTop: 18,
                         marginBottom: 4,
                     }}
-                />
+                    onPress={() => navigation.navigate("newpassword")}
 
+                />
                 <View
                     style={{
                         flexDirection: 'row',
@@ -63,7 +62,7 @@ const NewPassword = ({ navigation }: any) => {
                         marginVertical: 22,
                     }}>
                     <Text style={{ fontSize: 16, color: COLORS.black }}>
-                        Just remember?
+                        Resend
                     </Text>
                     <Pressable onPress={() => navigation.navigate('login')}>
                         <Text
@@ -73,7 +72,7 @@ const NewPassword = ({ navigation }: any) => {
                                 fontWeight: '600',
                                 marginLeft: 4,
                             }}>
-                            Login
+                            OTP
                         </Text>
                     </Pressable>
                 </View>
@@ -82,4 +81,4 @@ const NewPassword = ({ navigation }: any) => {
     );
 };
 
-export default NewPassword;
+export default OtpScreen;
