@@ -3,7 +3,7 @@ import CustomButton from "./CustomButton"
 import CustomPasswordInput from "./CustomPasswordInput";
 import CustomCheckBox from "./CustomCheckBox";
 import CustomSearchInput from './CustomSearchInput'
-
+import AlertModal from './AlertModal'
 
 
 export {
@@ -11,5 +11,6 @@ export {
     CustomButton,
     CustomPasswordInput,
     CustomCheckBox,
-    CustomSearchInput
+    CustomSearchInput,
+    AlertModal
 }

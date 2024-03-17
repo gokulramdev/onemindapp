@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import COLORS from '../constants/colors';
 import { CustomButton, CustomCheckBox, CustomPasswordInput, CustomTextInput } from "../components"
 
-const ChangePassword = ({ navigation }: any) => {
+const BusinessEnquiry = ({ navigation }: any) => {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -21,7 +21,7 @@ const ChangePassword = ({ navigation }: any) => {
                             marginVertical: 12,
                             color: COLORS.black,
                         }}>
-                        New Password
+                        Do you have a Business idea?
                     </Text>
 
                     <Text
@@ -29,34 +29,31 @@ const ChangePassword = ({ navigation }: any) => {
                             fontSize: 16,
                             color: COLORS.black,
                         }}>
-                        Please create a new password that you don’t use on any other site.
+                        Add some respective caption here
                     </Text>
                 </View>
-                <CustomPasswordInput
-                    label="Current password"
-                    placeholder="Enter current password"
+                <CustomTextInput
+                    label="Your full name"
+                    placeholder="Enter your full name"
                 />
-                <CustomPasswordInput
-                    label="Create new password"
-                    placeholder="Enter your password"
+                <CustomTextInput
+                    label="Email address"
+                    placeholder="Enter email address"
                 />
-                <CustomPasswordInput
-                    label="Confirm new password"
-                    placeholder="confirm new password"
+                <CustomTextInput
+                    label="Contact number"
+                    placeholder="Enter contact number"
+                    numberOfLines={10}
                 />
 
-                <CustomButton
-                    title="Reset New Password"
-                    filled
-                    style={{
-                        marginTop: 18,
-                        marginBottom: 4,
-                    }}
-                    onPress={() => { }}
+                <CustomTextInput
+                    label="Pitch your idea"
+                    placeholder="Pitch you idea with minimum of 100 words"
                 />
+                <CustomButton onPress={() => { }} title='Enquire Now' filled />
             </View>
         </SafeAreaView>
     );
 };
 
-export default ChangePassword;
+export default BusinessEnquiry;

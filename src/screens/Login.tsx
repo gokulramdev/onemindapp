@@ -8,10 +8,17 @@ import React, { useState } from 'react';
 import COLORS from '../constants/colors';
 import { CustomButton, CustomCheckBox, CustomPasswordInput, CustomTextInput } from "../components"
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 
+type LoginScreenNavigationProp = StackNavigationProp<any, 'Login'>;
 
-const Login = ({ navigation }: any) => {
+type Props = {
+    navigation: LoginScreenNavigationProp;
+};
+
+
+const Login = ({ navigation }: Props) => {
     const [isChecked, setIsChecked] = useState(false);
 
     const saveToken = async (token: any) => {

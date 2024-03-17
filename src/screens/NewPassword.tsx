@@ -48,6 +48,7 @@ const NewPassword = ({ navigation }: any) => {
                         marginTop: 18,
                         marginBottom: 4,
                     }}
+                    onPress={() => { }}
                 />
 
                 <View

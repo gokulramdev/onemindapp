@@ -93,6 +93,53 @@ const theme = StyleSheet.create({
     fontWeight: "800",
     fontSize: 14,
   },
+  H3: {
+    color: "#112211",
+    fontFamily: "Inter-SemiBold",
+    fontWeight: "400",
+    fontSize: 14,
+  },
+  flexColumn: {
+    flexDirection: 'column'
+  },
+  flexRow: {
+    flexDirection: 'row'
+  },
+  marginBottom10: {
+    marginBottom: 10
+  },
+  marginBottom20: {
+    marginBottom: 20
+  },
+  marginBottom30: {
+    marginBottom: 30
+  },
+  flex1: {
+    flex: 1
+  },
+  marginVertical22: {
+    marginVertical: 22
+  },
+  primarybutton: {
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderColor: "#FF3131",
+    backgroundColor: '#FF3131',
+    color: "#fff",
+    borderWidth: 2,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  secondarybutton: {
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderColor: "#F6F6F6",
+    backgroundColor: '#F6F6F6',
+    color: "#6D6D6D",
+    borderWidth: 2,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 
 });
 

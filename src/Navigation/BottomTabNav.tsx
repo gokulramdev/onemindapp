@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Contactus, LiveTelecast, LatestNews, Profile, UserView, HomeScreen, LatestNewsDetail, ChangePassword } from "../screens";
+import { Contactus, LiveTelecast, LatestNews, Profile, UserView, HomeScreen, LatestNewsDetail, ChangePassword, BusinessEnquiry, UserEnquiry } from "../screens";
 import CustomHeader from "../screens/CustomHeader";
 import { StyleSheet, View } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
@@ -91,7 +91,12 @@ const BottomTabNav = () => {
             <Tab.Screen name="changepassword" component={ChangePassword}
                 options={{ tabBarLabel: () => null, tabBarButton: () => null, header: () => null }}
             />
-
+            <Tab.Screen name="userenquiry" component={UserEnquiry}
+                options={{ tabBarLabel: () => null, tabBarButton: () => null, header: () => null }}
+            />
+            <Tab.Screen name="businessenquiry" component={BusinessEnquiry}
+                options={{ tabBarLabel: () => null, tabBarButton: () => null, header: () => null }}
+            />
         </Tab.Navigator>
     )
 };

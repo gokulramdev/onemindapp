@@ -1,12 +1,14 @@
 import { View, Text, Image, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import theme from '../theme'
 import { getToken } from '../hooks/useToken';
-import { CustomTextInput } from '../components';
+import { CustomTextInput, AlertModal } from '../components';
 
 export default function Profile({ navigation }: any) {
 
-    console.log("test_token", getToken())
+    const [modalVisible, setModalVisible] = useState(false);
+
+    // console.log("test_token", getToken())
 
     return (
         <View style={theme.marginTop10}>
@@ -40,7 +42,7 @@ export default function Profile({ navigation }: any) {
             <View>
                 <Text style={[theme.H1, theme.marginHorizontal20, theme.marginTop10, theme.primary]}>Delete account</Text>
                 <TouchableOpacity
-                    onPress={() => { }}
+                    onPress={() => { setModalVisible(true) }}
                 >
                     <Text style={[theme.marginHorizontal20, theme.marginTop5, theme.textColor]}>Delete account</Text>
                 </TouchableOpacity>
@@ -52,6 +54,7 @@ export default function Profile({ navigation }: any) {
                     <Text style={[theme.H1, theme.marginHorizontal20, theme.marginTop10, theme.primary]}>Logout</Text>
                 </TouchableOpacity>
             </View>
+            {modalVisible && <AlertModal modalVisible={modalVisible} setModalVisible={setModalVisible} />}
         </View>
     )
 }

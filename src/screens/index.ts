@@ -11,6 +11,9 @@ import Contactus from "./Contactus";
 import LatestNewsDetail from "./LatestNewsDetail";
 import OtpScreen from "./OtpScreen";
 import ChangePassword from "./ChangePassword"
+import BusinessEnquiry from "./BusinessEnquiry";
+import UserEnquiry from "./UserEnquiry";
+
 
 export {
     Login,
@@ -25,5 +28,7 @@ export {
     Contactus,
     LatestNewsDetail,
     OtpScreen,
-    ChangePassword
+    ChangePassword,
+    BusinessEnquiry,
+    UserEnquiry
 }

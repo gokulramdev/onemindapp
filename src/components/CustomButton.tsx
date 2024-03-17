@@ -2,7 +2,14 @@ import { Text, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
 import COLORS from '../constants/colors'
 
-const CustomButton = (props: any) => {
+interface Props {
+    color?: string;
+    filled?: boolean;
+    onPress: () => void;
+    style?: any,
+    title?: string
+}
+const CustomButton = (props: Props) => {
     const filledBgColor = props.color || COLORS.primary;
     const outlinedColor = COLORS.white;
     const bgColor = props.filled ? filledBgColor : outlinedColor;
@@ -17,7 +24,7 @@ const CustomButton = (props: any) => {
             }}
             onPress={props.onPress}
         >
-            <Text style={{ fontSize: 18, ... { color: textColor } }}>{props.title}</Text>
+            <Text style={{ fontSize: 18, ... { color: textColor, fontFamily: 'Inter-SemiBold' } }}>{props.title}</Text>
         </TouchableOpacity>
     )
 }
