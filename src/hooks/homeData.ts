@@ -1,16 +1,17 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import repo from "../repo";
+import _ from "lodash";
 
 interface Props {
     isEnabled: boolean
 }
 
-export const useGetLatestNews = ({ isEnabled = false }: Props) => {
+export const useGetNewsList = ({ isEnabled = false }: Props) => {
 
     const getLatestNewsQueryHelper =
         useQuery({
-            queryKey: ['get_latest_news'],
-            queryFn: repo.getLatestnews,
+            queryKey: ['get_news'],
+            queryFn: repo.getnewsList,
             enabled: isEnabled,
         })
 
@@ -39,7 +40,6 @@ export const useGetLocation = ({ isEnabled = false }: Props) => {
             queryFn: () => repo.getLocations(),
             enabled: isEnabled,
         })
-
     return { getLocationQueryHelper }
 }
 
@@ -50,6 +50,26 @@ export const useGetCategory = ({ isEnabled = false }: Props) => {
         useQuery({
             queryKey: ['get_category'],
             queryFn: () => repo.getCategory(),
+            enabled: isEnabled,
+        })
+
+    return { getCategoryQueryHelper }
+}
+
+
+interface HomeDetailsProps {
+    queryParams: {
+        locationid: string
+        categoryid: string
+    },
+    isEnabled: boolean
+}
+export const useGetHomeSearchDetail = ({ queryParams, isEnabled = false }: HomeDetailsProps) => {
+
+    const getCategoryQueryHelper =
+        useQuery({
+            queryKey: ['get_home_search', ..._.values(queryParams)],
+            queryFn: () => repo.getHomeSearchDetail(queryParams),
             enabled: isEnabled,
         })
 

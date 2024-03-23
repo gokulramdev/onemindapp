@@ -2,13 +2,16 @@ import {
     View,
     Text,
     Pressable,
-    SafeAreaView
+    SafeAreaView,
+    NativeSyntheticEvent,
+    TextInputChangeEventData
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import COLORS from '../constants/colors';
 import { CustomButton, CustomCheckBox, CustomPasswordInput, CustomTextInput } from "../components"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useAuthLogin } from '../hooks/authData';
 
 
 type LoginScreenNavigationProp = StackNavigationProp<any, 'Login'>;
@@ -20,15 +23,29 @@ type Props = {
 
 const Login = ({ navigation }: Props) => {
     const [isChecked, setIsChecked] = useState(false);
+    const { loginMutationHelper } = useAuthLogin();
+    const [formState, setFormState] = useState<{
+        mobile: string,
+        password: string,
+    }>({
+        mobile: "",
+        password: "",
+    })
 
-    const saveToken = async (token: any) => {
-        try {
-            await AsyncStorage.setItem('auth_token', "token");
-        } catch (error) {
-            console.error('Error saving token to AsyncStorage:', error);
-        }
+    const saveToken = async () => {
+        AsyncStorage.setItem('auth_token', "token_test_hardcodeone");
+        // try {
+        //     await 
+        // } catch (error) {
+        //     console.error('Error saving token to AsyncStorage:', error);
+        // }
     };
 
+    const onSubmit = useCallback(() => {
+        loginMutationHelper?.mutate(formState)
+        // navigation.navigate('homemain')
+        // saveToken()
+    }, [formState])
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -55,10 +72,13 @@ const Login = ({ navigation }: Props) => {
                 <CustomTextInput
                     label="Email address"
                     placeholder="Enter email address"
+                    onChangeText={(data) => setFormState({ ...formState, mobile: data })}
                 />
                 <CustomPasswordInput
                     label="Password"
                     placeholder="Enter your password"
+                    onChangeText={(text) => setFormState({ ...formState, password: text })}
+
                 />
 
                 <View
@@ -93,7 +113,7 @@ const Login = ({ navigation }: Props) => {
                         marginTop: 18,
                         marginBottom: 4,
                     }}
-                    onPress={() => navigation.navigate('homemain')}
+                    onPress={onSubmit}
                 />
 
                 <View

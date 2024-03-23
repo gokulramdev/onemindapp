@@ -3,10 +3,10 @@ import axios, { AxiosResponse } from "axios";
 
 const authRepo = () => {
     return {
-        login: () => axios.post('/settings/database/backup'),
-        register: () => axios.post('/settings/database/backup'),
-        forgetpassword: () => axios.post('/settings/database/backup'),
-        resetpassword: () => axios.post('/settings/database/backup'),
+        login: (params: any) => axios.post('/user/login', params),
+        register: () => axios.post('/user/signup'),
+        getotp: () => axios.post('/user/mobile/resendOTP'),
+        resetpassword: () => axios.post('/user/resetPassword'),
     }
 }
 

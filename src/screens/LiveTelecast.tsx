@@ -3,7 +3,6 @@ import React from 'react'
 import theme from '../theme'
 import Entypo from "react-native-vector-icons/Entypo"
 import YouTube from "react-native-youtube-iframe";
-import WebView from 'react-native-webview';
 
 
 export default function LiveTelecast() {

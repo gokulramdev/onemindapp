@@ -34,6 +34,7 @@ const BottomTabNav = () => {
                 borderTopWidth: 0,
                 height: 90,
             },
+            tabBarHideOnKeyboard: true
         }}>
             <Tab.Screen name="home" component={HomeScreen}
                 options={{

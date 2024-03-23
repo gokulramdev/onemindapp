@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import theme from '../theme'
 import { getToken } from '../hooks/useToken';
 import { CustomTextInput, AlertModal } from '../components';
@@ -8,7 +8,9 @@ export default function Profile({ navigation }: any) {
 
     const [modalVisible, setModalVisible] = useState(false);
 
-    // console.log("test_token", getToken())
+    useEffect(() => {
+        console.log("test_token", getToken())
+    }, [])
 
     return (
         <View style={theme.marginTop10}>
