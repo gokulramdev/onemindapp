@@ -16,7 +16,7 @@ export default function StackNav() {
     );
 
     return (
-        <Stack.Navigator initialRouteName='login' screenOptions={{ headerShown: false, animationEnabled: false }}>
+        <Stack.Navigator initialRouteName='homemain' screenOptions={{ headerShown: false, animationEnabled: false }}>
             <Stack.Screen name="login" component={Login} />
             <Stack.Screen name="register" component={Signup} />
             <Stack.Screen name="forgotPassword" component={ForgotPassword} />

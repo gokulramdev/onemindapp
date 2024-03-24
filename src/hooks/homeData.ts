@@ -31,6 +31,17 @@ export const useGetLatestNewDetail = ({ isEnabled = false }: Props) => {
     return { getLatestNewDetailQueryHelper }
 }
 
+export const useGetLiveTelecast = ({ isEnabled = false }: Props) => {
+
+    const getLiveTelecastQueryHelper =
+        useQuery({
+            queryKey: ['get_live_telecast'],
+            queryFn: repo.getLivetelecast,
+            enabled: isEnabled,
+        })
+
+    return { getLiveTelecastQueryHelper }
+}
 
 export const useGetLocation = ({ isEnabled = false }: Props) => {
 

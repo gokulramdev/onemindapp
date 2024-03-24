@@ -3,11 +3,13 @@ import React from 'react'
 import theme from '../theme'
 import Entypo from "react-native-vector-icons/Entypo"
 import YouTube from "react-native-youtube-iframe";
+import { useGetLiveTelecast } from '../hooks/homeData';
 
 
 export default function LiveTelecast() {
     const { width, height } = Dimensions.get('window')
-
+    const { getLiveTelecastQueryHelper } = useGetLiveTelecast({ isEnabled: true });
+    console.log("getLiveTelecastQueryHelper", getLiveTelecastQueryHelper?.data?.live)
     return (
         <View style={theme.marginHorizontal20}>
             <View>
@@ -26,7 +28,7 @@ export default function LiveTelecast() {
             </View>
             <View style={theme.marginTop20}>
                 <YouTube
-                    videoId="w7ejDZ8SWv8"
+                    videoId="r_p_eWX42Ws?si=bIZrlbqImQUIWzqb"
                     height={height * 0.4}
                 />
             </View>

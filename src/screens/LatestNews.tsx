@@ -3,7 +3,7 @@ import React, { useCallback } from 'react'
 import theme from '../theme'
 import { useGetNewsList } from '../hooks/homeData'
 import _ from 'lodash'
-
+import dayjs from 'dayjs'
 
 export default function LatestNews({ navigation }: any) {
 
@@ -16,10 +16,10 @@ export default function LatestNews({ navigation }: any) {
                 onPress={() => { navigation.navigate("latestnewsdetail") }}>
                 <View style={styles.newscard} key={item?._id?.$oid}>
                     <View style={{ flex: 1, marginRight: 12 }}>
-                        <Text style={[theme.H2]} numberOfLines={2} ellipsizeMode='tail'>
+                        <Text style={[theme.H2, { textTransform: "capitalize" }]} numberOfLines={2} ellipsizeMode='tail'>
                             {item?.title}
                         </Text>
-                        <Text>Vellore Mon 26 Feb 7:45:26PM</Text>
+                        <Text style={{ color: "#000", textTransform: "capitalize" }}>{item?.location} {dayjs(item?.time).format('ddd, MMM D, YYYY h:mm A')}</Text>
                     </View>
                     <View>
                         <Image
