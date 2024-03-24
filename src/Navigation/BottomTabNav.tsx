@@ -7,21 +7,38 @@ import Ionicons from "react-native-vector-icons/Ionicons"
 import Entypo from "react-native-vector-icons/Entypo"
 import Feather from "react-native-vector-icons/Feather"
 import { createStackNavigator } from "@react-navigation/stack";
+import { useAtom } from "jotai";
+import { tokenAtom } from "../store/tokenAtom";
 
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 
-const useView = () => {
+
+const UseView = () => {
     return (
-        <Stack.Navigator initialRouteName='homemain' screenOptions={{ headerShown: false, animationEnabled: false }}>
+        <Stack.Navigator initialRouteName='home' screenOptions={{ headerShown: false, animationEnabled: false }}>
+            <Stack.Screen name="home" component={HomeScreen} />
             <Stack.Screen name="userview" component={UserView} />
         </Stack.Navigator>
 
     )
 }
+
+const NewsScreen = () => {
+    return (
+        <Stack.Navigator initialRouteName='news' screenOptions={{ headerShown: true, animationEnabled: false }}>
+            <Stack.Screen name="news" component={LatestNews} />
+            <Stack.Screen name="latestnewsdetail" component={LatestNewsDetail} />
+        </Stack.Navigator>
+
+    )
+}
 const BottomTabNav = () => {
+
+    const [userToken] = useAtom(tokenAtom)
+
     return (
         <Tab.Navigator screenOptions={{
             headerShown: true,
@@ -36,7 +53,7 @@ const BottomTabNav = () => {
             },
             tabBarHideOnKeyboard: true
         }}>
-            <Tab.Screen name="home" component={HomeScreen}
+            <Tab.Screen name="home" component={UseView}
                 options={{
                     tabBarLabel: () => null,
                     tabBarIcon: (iconProps) => (
@@ -46,8 +63,9 @@ const BottomTabNav = () => {
                     )
                 }}
             />
-            <Tab.Screen name="news" component={LatestNews}
+            <Tab.Screen name="news" component={NewsScreen}
                 options={{
+                    headerShown: false,
                     tabBarLabel: () => null,
                     tabBarIcon: (iconProps) => (
                         <View>
@@ -74,21 +92,23 @@ const BottomTabNav = () => {
                         </View>
                     )
                 }} />
-            <Tab.Screen name="profile" component={Profile}
-                options={{
-                    tabBarLabel: () => null,
-                    tabBarIcon: (iconProps) => (
-                        <View>
-                            <MaterialCommunityIcons name='account-outline' style={styles.headerIcons} />
-                        </View>
-                    )
-                }} />
-            <Tab.Screen name="userview" component={UserView}
+            {userToken
+                && <Tab.Screen name="profile" component={Profile}
+                    options={{
+                        tabBarLabel: () => null,
+                        tabBarIcon: (iconProps) => (
+                            <View>
+                                <MaterialCommunityIcons name='account-outline' style={styles.headerIcons} />
+                            </View>
+                        ),
+                    }} />
+            }
+            {/* <Tab.Screen name="userview" component={UserView}
                 options={{ tabBarLabel: () => null, tabBarButton: () => null, header: () => null }}
-            />
-            <Tab.Screen name="latestnewsdetail" component={LatestNewsDetail}
+            /> */}
+            {/* <Tab.Screen name="latestnewsdetail" component={LatestNewsDetail}
                 options={{ tabBarLabel: () => null, tabBarButton: () => null, header: () => null }}
-            />
+            /> */}
             <Tab.Screen name="changepassword" component={ChangePassword}
                 options={{ tabBarLabel: () => null, tabBarButton: () => null, header: () => null }}
             />

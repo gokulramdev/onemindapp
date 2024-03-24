@@ -1,12 +1,22 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import theme from '../theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAtom } from 'jotai';
+import { tokenAtom } from '../store/tokenAtom';
+
 
 const DrawerContent = ({ navigation }: any) => {
     const navigateTo = useCallback((path: string) => {
         navigation.navigate(path);
     }, []);
 
+    const [userToken, setToken] = useAtom(tokenAtom)
+
+    const logut = useCallback(async () => {
+        await AsyncStorage.clear()
+        setToken("")
+    }, [])
 
     return (
         <View style={theme.marginTop40}>
@@ -36,7 +46,7 @@ const DrawerContent = ({ navigation }: any) => {
                         <Text style={styles.profileContent}>Contact us</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigateTo('profile')}>
+                <TouchableOpacity onPress={() => userToken ? navigateTo('profile') : null}>
                     <View style={styles.profiletab}>
                         <Text style={styles.profileContent}>Profile</Text>
                     </View>
@@ -46,11 +56,17 @@ const DrawerContent = ({ navigation }: any) => {
                         <Text style={styles.profileContent}>Visit Website</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => console.log("website")}>
+                {(userToken) ? <TouchableOpacity onPress={logut}>
                     <View style={styles.profiletab}>
                         <Text style={styles.profileContent}>Logout</Text>
                     </View>
-                </TouchableOpacity>
+                </TouchableOpacity> :
+                    <TouchableOpacity onPress={() => navigateTo('login')}>
+                        <View style={styles.profiletab}>
+                            <Text style={styles.profileContent}>Login</Text>
+                        </View>
+                    </TouchableOpacity>
+                }
             </View>
         </View>
     );

@@ -1,25 +1,40 @@
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, Image, ScrollView, FlatList } from 'react-native'
+import React, { useMemo } from 'react'
 import { CarouselComponent, CustomButton } from '../components'
 import theme from '../theme'
 import { useGetHomeSearchDetail } from '../hooks/homeData';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function UserView({ route }: any) {
     const { location } = route.params;
 
-    const { getCategoryQueryHelper } = useGetHomeSearchDetail({ isEnabled: !!location, queryParams: route.params })
-    console.log("getCategoryQueryHelper", getCategoryQueryHelper?.data)
+    const { getBusinessQueryHelper } = useGetHomeSearchDetail({ isEnabled: !!location, queryParams: route.params })
+    const { name = "", images = [], overView = "", address = "" } = getBusinessQueryHelper?.data ?? {}
+
+
+
+    const renderItem = ({ item }: any) => (
+        <View style={styles.itemContainer}>
+            <Image
+                source={{
+                    uri: item?.image
+                }}
+                style={styles.image}
+            />
+        </View>
+    );
+
     return (
         <ScrollView>
             <View style={[theme.marginTop30, theme.marginHorizontal20, { marginBottom: 50 }]}>
-                <Text style={[theme.H2, theme.marginBottom10]}>UserView</Text>
-                <CarouselComponent />
+                <Text style={[theme.H2, theme.marginBottom10]}>{name}</Text>
+                <CarouselComponent data={images} />
                 <Text style={[theme.H2, theme.marginTop20]}>Overview</Text>
-                <Text style={[theme.H3]}> Hotel fortune park, vellore: See traveller reviews, 2 user photos and best deals for ... enjoy stay here, you will find great bars and restaurants near the hotel.</Text>
+                <Text style={[theme.H3]}>{overView}</Text>
                 <Text style={[theme.H2, theme.marginTop20]}>Address</Text>
-                <Text>No.31/32 A, 7th East Main Road, Katpadi, Gandhi Nagar Vellore, Vellore - 632006 (Near Auxilium College)</Text>
+                <Text>{address}</Text>
                 <Text style={[theme.H2, theme.marginTop20]}>Contact</Text>
-                <Text>No.31/32 A, 7th East Main Road, Katpadi, Gandhi Nagar Vellore, Vellore - 632006 (Near Auxilium College)</Text>
+                <Text>{address}</Text>
                 <CustomButton
                     title="Enquire Now"
                     filled
@@ -37,46 +52,29 @@ export default function UserView({ route }: any) {
                     }}
                     onPress={() => { }}
                 />
-                <View style={styles.container}>
-                    <View style={styles.imageRow}>
-                        <Image
-                            style={styles.image}
-                            source={{ uri: "https://via.placeholder.com/300" }}
-                        />
-                        <Image
-                            style={styles.image}
-                            source={{ uri: "https://via.placeholder.com/300" }}
-                        />
-                        <Image
-                            style={styles.image}
-                            source={{ uri: "https://via.placeholder.com/300" }}
-                        />
-                        <Image
-                            style={styles.image}
-                            source={{ uri: "https://via.placeholder.com/300" }}
-                        />
-                    </View>
-                </View>
+                <Text style={[theme.H2, theme.marginTop20]}>Preview images</Text>
+                {images && <FlatList
+                    data={images}
+                    renderItem={renderItem}
+                    keyExtractor={item => item?.id}
+                    showsHorizontalScrollIndicator
+                    horizontal={true}
+                />}
             </View>
         </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 10,
-        marginVertical: 20,
-        marginHorizontal: 20
-    },
-    imageRow: {
-        flexDirection: 'row',
+    itemContainer: {
+        marginHorizontal: 4,
+        marginBottom: 60,
+        marginTop: 20
     },
     image: {
         width: 100,
         height: 100,
-        margin: 5,
+        marginRight: 10,
+        borderRadius: 5,
     },
 });

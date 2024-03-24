@@ -77,12 +77,12 @@ interface HomeDetailsProps {
 }
 export const useGetHomeSearchDetail = ({ queryParams, isEnabled = false }: HomeDetailsProps) => {
 
-    const getCategoryQueryHelper =
+    const getBusinessQueryHelper =
         useQuery({
             queryKey: ['get_home_search', ..._.values(queryParams)],
             queryFn: () => repo.getHomeSearchDetail(queryParams),
             enabled: isEnabled,
         })
 
-    return { getCategoryQueryHelper }
+    return { getBusinessQueryHelper }
 }

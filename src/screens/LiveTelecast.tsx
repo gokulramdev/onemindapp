@@ -28,7 +28,7 @@ export default function LiveTelecast() {
             </View>
             <View style={theme.marginTop20}>
                 <YouTube
-                    videoId="r_p_eWX42Ws?si=bIZrlbqImQUIWzqb"
+                    videoId="si=I-ipfzD5AFy_do1w"
                     height={height * 0.4}
                 />
             </View>

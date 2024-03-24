@@ -5,6 +5,7 @@ import theme from '../theme';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import COLORS from '../constants/colors';
+import { Linking } from 'react-native';
 
 const {
     flex1,

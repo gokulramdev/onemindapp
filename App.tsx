@@ -5,6 +5,9 @@ import SplashScreen from 'react-native-splash-screen';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StackNav } from './src/Navigation';
 import { initAxios } from './src/constants/axios';
+import { useAtom } from 'jotai';
+import { tokenAtom } from './src/store/tokenAtom';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const queryClient =
@@ -19,9 +22,21 @@ const queryClient =
 
 
 const App = () => {
+  const [_, setToken] = useAtom(tokenAtom)
+
 
   // splashScreen automatic close
   useEffect(() => { setTimeout(() => SplashScreen.hide(), 1000) }, [])
+  useEffect(() => {
+
+    AsyncStorage.getItem('auth_token')
+      .then((jsonString: any) => {
+        setToken(jsonString)
+        return jsonString
+      }).catch((error: any) => {
+        console.error('Error retrieving response: ', error);
+      });
+  }, [])
 
   initAxios()
   return (

@@ -3,48 +3,29 @@ import {
     Text,
     Pressable,
     SafeAreaView,
-    NativeSyntheticEvent,
-    TextInputChangeEventData
 } from 'react-native';
 import React, { useCallback, useState } from 'react';
 import COLORS from '../constants/colors';
 import { CustomButton, CustomCheckBox, CustomPasswordInput, CustomTextInput } from "../components"
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { useAuthLogin } from '../hooks/authData';
 
 
-type LoginScreenNavigationProp = StackNavigationProp<any, 'Login'>;
 
-type Props = {
-    navigation: LoginScreenNavigationProp;
-};
+const Login = ({ navigation }: any) => {
 
-
-const Login = ({ navigation }: Props) => {
     const [isChecked, setIsChecked] = useState(false);
     const { loginMutationHelper } = useAuthLogin();
+
     const [formState, setFormState] = useState<{
         mobile: string,
         password: string,
     }>({
-        mobile: "",
-        password: "",
+        mobile: "8300702695",
+        password: "Kamalesh8",
     })
-
-    const saveToken = async () => {
-        AsyncStorage.setItem('auth_token', "token_test_hardcodeone");
-        // try {
-        //     await 
-        // } catch (error) {
-        //     console.error('Error saving token to AsyncStorage:', error);
-        // }
-    };
 
     const onSubmit = useCallback(() => {
         loginMutationHelper?.mutate(formState)
-        // navigation.navigate('homemain')
-        // saveToken()
     }, [formState])
 
     return (
@@ -70,9 +51,10 @@ const Login = ({ navigation }: Props) => {
                     </Text>
                 </View>
                 <CustomTextInput
-                    label="Email address"
-                    placeholder="Enter email address"
+                    label="Mobile Number"
+                    placeholder="Enter mobile number"
                     onChangeText={(data) => setFormState({ ...formState, mobile: data })}
+                    keyboardType='number-pad'
                 />
                 <CustomPasswordInput
                     label="Password"
