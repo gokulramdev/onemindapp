@@ -13,7 +13,12 @@ export default function LatestNews({ navigation }: any) {
     const renderCategoryItem = useCallback(({ item }: any) => {
         return (
             <TouchableOpacity
-                onPress={() => { navigation.navigate("latestnewsdetail") }}>
+                onPress={() => {
+                    navigation.navigate("latestnewsdetail", {
+                        newsid: item?.id,
+                    })
+                    // navigation.navigate("latestnewsdetail")
+                }}>
                 <View style={styles.newscard} key={item?._id?.$oid}>
                     <View style={{ flex: 1, marginRight: 12 }}>
                         <Text style={[theme.H2, { textTransform: "capitalize" }]} numberOfLines={2} ellipsizeMode='tail'>

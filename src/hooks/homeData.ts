@@ -18,13 +18,20 @@ export const useGetNewsList = ({ isEnabled = false }: Props) => {
     return { getLatestNewsQueryHelper }
 }
 
+interface NewsDetailsProps {
+    queryParams: {
+        locationid: string
+        categoryid: string
+    },
+    isEnabled: boolean
+}
 
-export const useGetLatestNewDetail = ({ isEnabled = false }: Props) => {
+export const useGetLatestNewDetail = ({ queryParams, isEnabled = false }: NewsDetailsProps) => {
 
     const getLatestNewDetailQueryHelper =
         useQuery({
-            queryKey: ['get_latest_news_detail'],
-            queryFn: () => repo.getNewsDetails({ id: 1 }),
+            queryKey: ['get_latest_news_detail', ..._.values(queryParams)],
+            queryFn: () => repo.getNewsDetails(queryParams),
             enabled: isEnabled,
         })
 

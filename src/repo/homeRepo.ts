@@ -13,8 +13,7 @@ const homeRepo = () => {
         getnewsList: () => axios.get("/news"),
 
         // Latest News details
-        getNewsDetails: (params: any) => axios.get("/news"),
-
+        getNewsDetails: (params: any) => axios.get(`/news/${params?.newsid}`).then((res) => res.data),
 
         getLivetelecast: () => axios.get("/liveStream/mobile").then((res) => res.data),
 

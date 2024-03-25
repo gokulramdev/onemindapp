@@ -29,8 +29,8 @@ const UseView = () => {
 const NewsScreen = () => {
     return (
         <Stack.Navigator initialRouteName='news' screenOptions={{ headerShown: true, animationEnabled: false }}>
-            <Stack.Screen name="news" component={LatestNews} />
-            <Stack.Screen name="latestnewsdetail" component={LatestNewsDetail} />
+            <Stack.Screen name="news" component={LatestNews} options={{ headerShown: false }} />
+            <Stack.Screen name="latestnewsdetail" component={LatestNewsDetail} options={{ headerShown: false }} />
         </Stack.Navigator>
 
     )

@@ -13,9 +13,9 @@ const DrawerContent = ({ navigation }: any) => {
 
     const [userToken, setToken] = useAtom(tokenAtom)
 
-    const logut = useCallback(async () => {
-        await AsyncStorage.clear()
-        setToken("")
+    const logout = useCallback(async () => {
+        // await AsyncStorage.clear()
+        setToken(undefined)
     }, [])
 
     return (
@@ -56,7 +56,7 @@ const DrawerContent = ({ navigation }: any) => {
                         <Text style={styles.profileContent}>Visit Website</Text>
                     </View>
                 </TouchableOpacity>
-                {(userToken) ? <TouchableOpacity onPress={logut}>
+                {(userToken) ? <TouchableOpacity onPress={logout}>
                     <View style={styles.profiletab}>
                         <Text style={styles.profileContent}>Logout</Text>
                     </View>

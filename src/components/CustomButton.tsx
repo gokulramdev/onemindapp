@@ -1,5 +1,5 @@
-import { Text, TouchableOpacity, StyleSheet } from 'react-native'
-import React from 'react'
+import { Text, TouchableOpacity, StyleSheet, View } from 'react-native'
+import React, { ReactNode } from 'react'
 import COLORS from '../constants/colors'
 
 interface Props {
@@ -8,6 +8,8 @@ interface Props {
     onPress: () => void;
     style?: any,
     title?: string
+    IconsRight?: ReactNode;
+    IconsLeft?: ReactNode;
 }
 const CustomButton = (props: Props) => {
     const filledBgColor = props.color || COLORS.primary;
@@ -24,14 +26,19 @@ const CustomButton = (props: Props) => {
             }}
             onPress={props.onPress}
         >
-            <Text style={{ fontSize: 18, ... { color: textColor, fontFamily: 'Inter-SemiBold' } }}>{props.title}</Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+                {props.IconsLeft && <View style={{ marginRight: 5 }}>{props.IconsLeft}</View>}
+                <Text style={{ fontSize: 16, fontWeight: "600", ... { color: textColor, fontFamily: 'Inter-SemiBold' } }}>{props.title}</Text>
+                {props.IconsRight && <View style={{ marginLeft: 5 }}>{props.IconsRight}</View>}
+            </View>
+
         </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
     button: {
-        paddingBottom: 16,
+        paddingBottom: 10,
         paddingVertical: 10,
         borderColor: COLORS.primary,
         borderWidth: 2,

@@ -6,7 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { useGetLocation, useGetCategory } from '../hooks/homeData';
 import { useFocusEffect } from '@react-navigation/native';
-
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 
 
@@ -154,6 +154,8 @@ export default function HomeScreen({ navigation }: any) {
                         category: category?.id,
                     })
                 }}
+                IconsLeft={<AntDesign name="search1" style={{ fontSize: 20, color: "#fff" }} />}
+
             />
         </View>
     );

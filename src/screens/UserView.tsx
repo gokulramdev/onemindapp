@@ -3,7 +3,9 @@ import React, { useMemo } from 'react'
 import { CarouselComponent, CustomButton } from '../components'
 import theme from '../theme'
 import { useGetHomeSearchDetail } from '../hooks/homeData';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
 
 export default function UserView({ route }: any) {
     const { location } = route.params;
@@ -42,6 +44,7 @@ export default function UserView({ route }: any) {
                         marginTop: 18,
                     }}
                     onPress={() => { }}
+                    IconsRight={<Entypo name="mail" style={{ fontSize: 20, color: "#fff" }} />}
                 />
                 <Text style={[theme.H2, theme.marginTop20]}>Career</Text>
                 <CustomButton
@@ -51,6 +54,7 @@ export default function UserView({ route }: any) {
                         marginTop: 18,
                     }}
                     onPress={() => { }}
+                    IconsRight={<FontAwesome name="upload" style={{ fontSize: 20, color: "#fff" }} />}
                 />
                 <Text style={[theme.H2, theme.marginTop20]}>Preview images</Text>
                 {images && <FlatList
@@ -76,5 +80,10 @@ const styles = StyleSheet.create({
         height: 100,
         marginRight: 10,
         borderRadius: 5,
+    },
+    headerIcons: {
+        fontSize: 28,
+        color: 'black',
+        width: '20%',
     },
 });
