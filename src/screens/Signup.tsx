@@ -1,11 +1,29 @@
 import { View, Text, Pressable, SafeAreaView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import COLORS from '../constants/colors';
 import { CustomButton, CustomCheckBox, CustomPasswordInput, CustomTextInput } from "../components"
+import { useAuthRegister } from '../hooks/authData';
 
 
 const Signup = ({ navigation }: any) => {
     const [isChecked, setIsChecked] = useState(true);
+    const { registerMutationHelper } = useAuthRegister()
+
+    const [formState, setFormState] = useState<{
+        mobile: string,
+        password: string,
+        name: string
+    }>({
+        mobile: "",
+        password: "",
+        name: ""
+    })
+
+    const onSubmit = useCallback(() => {
+        registerMutationHelper?.mutate(formState)
+
+    }, [formState])
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             <View style={{ flex: 1, marginHorizontal: 22 }}>
@@ -29,14 +47,21 @@ const Signup = ({ navigation }: any) => {
                 <CustomTextInput
                     label="Your full name"
                     placeholder="Enter your full name"
+                    onChangeText={(data) => setFormState({ ...formState, name: data })}
+
                 />
                 <CustomTextInput
-                    label="Email address"
-                    placeholder="Enter email address"
+                    label="Mobile number"
+                    placeholder="Enter mobile number"
+                    keyboardType='number-pad'
+                    onChangeText={(data) => setFormState({ ...formState, mobile: data })}
+
                 />
                 <CustomPasswordInput
                     label="Password"
                     placeholder="Enter your password"
+                    onChangeText={(data) => setFormState({ ...formState, password: data })}
+
                 />
                 <CustomCheckBox
                     label="I agree to terms and conditions"
@@ -51,6 +76,7 @@ const Signup = ({ navigation }: any) => {
                         marginTop: 18,
                         marginBottom: 4,
                     }}
+                    onPress={onSubmit}
                 />
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 20 }}>

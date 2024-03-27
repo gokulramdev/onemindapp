@@ -16,13 +16,13 @@ export default function StackNav() {
     );
 
     return (
-        <Stack.Navigator initialRouteName='homemain' screenOptions={{ headerShown: false, animationEnabled: false }}>
+        <Stack.Navigator initialRouteName='home' screenOptions={{ headerShown: false, animationEnabled: false }}>
             <Stack.Screen name="login" component={Login} />
             <Stack.Screen name="register" component={Signup} />
             <Stack.Screen name="forgotPassword" component={ForgotPassword} />
             <Stack.Screen name="otpsreen" component={OtpScreen} />
             <Stack.Screen name="newpassword" component={NewPassword} />
-            <Stack.Screen name="homemain" component={HomeScreenComponent} />
+            <Stack.Screen name="home" component={HomeScreenComponent} />
         </Stack.Navigator>
 
     )

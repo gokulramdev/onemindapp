@@ -3,20 +3,17 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { DrawerActions } from '@react-navigation/native';
-import EvilIcons from "react-native-vector-icons/EvilIcons"
+import Feather from "react-native-vector-icons/Feather"
 import theme from '../theme';
-import { useRoute } from '@react-navigation/native';
 
 
-const CustomHeader = ({ showBackButton }: any) => {
+const CustomBackHeader = ({ showBackButton }: any) => {
     const navigation = useNavigation()
-    const route = useRoute();
-    console.log("route_header", route)
     return (
         <View style={styles.header}>
             <View style={theme.flexOne}>
                 <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-                    <EvilIcons name='navicon' style={styles.headerIcons} />
+                    <Feather name='arrow-left' style={styles.headerIcons} />
                 </TouchableOpacity>
             </View>
             <View >
@@ -44,4 +41,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default CustomHeader;
+export default CustomBackHeader;

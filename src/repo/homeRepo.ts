@@ -24,6 +24,7 @@ const homeRepo = () => {
             const _params = new URLSearchParams(params)
             return axios.get(`/home/search?${_params.toString()}`).then((res) => res.data)
         },
+        getProfile: () => axios.get("/me").then((res) => res.data),
 
     }
 }

@@ -23,6 +23,7 @@ const CustomTextInput: FC<CustomTextInputProps> = ({
                 style={[styles.input, style]}
                 placeholder={placeholder}
                 placeholderTextColor={inputProps.placeholderTextColor || '#494949'}
+                numberOfLines={2}
                 {...inputProps}
             />
         </View>
@@ -41,7 +42,6 @@ const styles = StyleSheet.create({
     },
     input: {
         width: "100%",
-        height: 58,
         borderColor: COLORS.lightgrey,
         borderWidth: 1,
         alignItems: "center",

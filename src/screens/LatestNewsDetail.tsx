@@ -20,20 +20,24 @@ export default function LatestNewsDetail({ route }: any) {
                 <View>
                     <Text style={[theme.H1, theme.textCenter]}>Latest news</Text>
                 </View>
-                <View style={[theme.verticalCenter, theme.marginTop20]}>
-                    <Image
-                        source={{ uri: image }}
-                        style={styles.image}
-                    />
+                <View style={styles.cardcontainer} >
+
+                    <View style={[theme.verticalCenter, theme.marginTop20]}>
+                        <Image
+                            source={{ uri: image }}
+                            style={styles.image}
+                        />
+                    </View>
+                    <View>
+                        <Text style={[theme.H1, theme.marginTop20, { textTransform: "capitalize" }]} numberOfLines={2} ellipsizeMode='tail'>
+                            {title}
+                        </Text>
+                        <Text style={{ fontSize: 12, color: "#000", marginTop: 5, textTransform: "capitalize" }}>{location} {dayjs(time).format('ddd, MMM D, YYYY h:mm A')}</Text>
+                        <Text style={{ color: "#000", marginTop: 5 }}>{description}
+                        </Text>
+                    </View>
                 </View>
-                <View>
-                    <Text style={[theme.H2, theme.marginTop20, { textTransform: "capitalize" }]} numberOfLines={2} ellipsizeMode='tail'>
-                        {title}
-                    </Text>
-                    <Text style={{ color: "#000", marginTop: 5, textTransform: "capitalize" }}>{location} {dayjs(time).format('ddd, MMM D, YYYY h:mm A')}</Text>
-                    <Text style={{ color: "#000", marginTop: 5 }}>{description}
-                    </Text>
-                </View>
+
             </View>
         </ScrollView>
 
@@ -43,11 +47,14 @@ export default function LatestNewsDetail({ route }: any) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        marginBottom: 100
+    },
+    cardcontainer: {
+        marginTop: 20,
         borderWidth: 1,
         borderColor: "#8692A6",
-        marginHorizontal: 10,
+        marginHorizontal: 14,
         padding: 10,
-        marginBottom: 100
     },
     image: {
         width: screenWidth - 50,

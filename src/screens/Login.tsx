@@ -20,8 +20,8 @@ const Login = ({ navigation }: any) => {
         mobile: string,
         password: string,
     }>({
-        mobile: "8300702695",
-        password: "Kamalesh8",
+        mobile: "",
+        password: "",
     })
 
     const onSubmit = useCallback(() => {

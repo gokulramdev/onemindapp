@@ -1,10 +1,9 @@
-import { View, Text, Image, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, Image, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { CustomButton } from '../components';
 import theme from '../theme';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import COLORS from '../constants/colors';
+import Entypo from 'react-native-vector-icons/Entypo';
 import { Linking } from 'react-native';
 
 const {
@@ -19,6 +18,13 @@ const {
 } = theme;
 
 export default function Contactus({ navigation }: any) {
+
+    const openLink = () => {
+        const url = 'https://example.com';
+        Linking.openURL(url)
+            .catch(err => console.error('An error occurred', err));
+    };
+
     return (
         <View style={[flex1, flexColumn, marginHorizontal20]}>
             <View style={[marginVertical22, verticalCenter]}>
@@ -40,10 +46,18 @@ export default function Contactus({ navigation }: any) {
                     <View style={[marginBottom30]}>
                         <Text style={theme.H1}>Social media</Text>
                         <View style={[flexRow, marginTop20]}>
-                            <EvilIcons name="sc-facebook" style={styles.headerIcons} />
-                            <AntDesign name="google" style={styles.headerIcons} />
-                            <AntDesign name="twitter" style={styles.headerIcons} />
-                            <EvilIcons name="sc-facebook" style={styles.headerIcons} />
+                            <TouchableOpacity onPress={openLink} style={theme.marginHorizontal10}>
+                                <Text><AntDesign name="facebook-square" style={styles.Icons} /></Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={openLink} style={theme.marginHorizontal10}>
+                                <Text><AntDesign name="google" style={styles.Icons} /></Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={openLink} style={theme.marginHorizontal10}>
+                                <Text><AntDesign name="twitter" style={styles.Icons} /></Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={openLink} style={theme.marginHorizontal10}>
+                                <Text><AntDesign name="instagram" style={styles.Icons} /></Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>
@@ -71,6 +85,8 @@ export default function Contactus({ navigation }: any) {
                                     //   height: '50%',
                                 }}
                                 onPress={() => { navigation.navigate("businessenquiry") }}
+                                IconsRight={<Entypo name="mail" style={{ fontSize: 20, color: "#fff" }} />}
+
                             />
                         </View>
                     </View>
@@ -88,8 +104,8 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         fontSize: 16,
     },
-    headerIcons: {
-        fontSize: 28,
+    Icons: {
+        fontSize: 24,
         color: 'black',
         width: '20%',
     },

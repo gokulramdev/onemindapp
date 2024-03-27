@@ -1,17 +1,23 @@
-import { View, Text, StyleSheet, Image, ScrollView, FlatList } from 'react-native'
+import { View, Text, StyleSheet, Image, ScrollView, FlatList, TouchableOpacity } from 'react-native'
 import React, { useMemo } from 'react'
 import { CarouselComponent, CustomButton } from '../components'
 import theme from '../theme'
 import { useGetHomeSearchDetail } from '../hooks/homeData';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import Foundation from 'react-native-vector-icons/Foundation';
+import Ionicons from "react-native-vector-icons/Ionicons"
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import { Linking } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 export default function UserView({ route }: any) {
     const { location } = route.params;
+    const navigation = useNavigation()
 
     const { getBusinessQueryHelper } = useGetHomeSearchDetail({ isEnabled: !!location, queryParams: route.params })
-    const { name = "", images = [], overView = "", address = "" } = getBusinessQueryHelper?.data ?? {}
+    const { name = "", images = [], overView = "", address = "", category = {} } = getBusinessQueryHelper?.data ?? {}
 
 
 
@@ -26,16 +32,63 @@ export default function UserView({ route }: any) {
         </View>
     );
 
+    const openLink = (url: string) => {
+
+        Linking.openURL(url)
+            .catch(err => console.error('An error occurred', err));
+    };
+
+
     return (
         <ScrollView>
             <View style={[theme.marginTop30, theme.marginHorizontal20, { marginBottom: 50 }]}>
-                <Text style={[theme.H2, theme.marginBottom10]}>{name}</Text>
+                <View style={{ flexDirection: "row" }}>
+                    <View style={{ flex: 1 }}>
+                        <Text style={[theme.H1, theme.marginBottom10]}>{name}</Text>
+                    </View>
+                    <View style={{ flexDirection: "row" }}>
+                        <Text style={[theme.H2, theme.marginBottom10, styles.bage]}>{getBusinessQueryHelper?.data?.location?.name}</Text>
+                        <Text style={[theme.H2, theme.marginBottom10, styles.bage]}>{category?.name}</Text>
+                    </View>
+                </View>
                 <CarouselComponent data={images} />
-                <Text style={[theme.H2, theme.marginTop20]}>Overview</Text>
+                <View style={{ marginTop: 20, flexDirection: "row" }}>
+                    <Text style={[theme.H1]}>Overview</Text>
+                    <Foundation name="info" style={{ marginLeft: 4, fontSize: 20, color: "#000" }} />
+                </View>
+
                 <Text style={[theme.H3]}>{overView}</Text>
-                <Text style={[theme.H2, theme.marginTop20]}>Address</Text>
+                <View style={{ marginTop: 20, flexDirection: "row" }}>
+                    <View style={{ flex: 1, flexDirection: "row" }}>
+                        <Text style={[theme.H1]}>Address</Text>
+                        <Entypo name="location" style={{ marginLeft: 6, fontSize: 16, color: "#000" }} />
+                    </View>
+                    <View style={{ flexDirection: "row" }}>
+                        <Ionicons name="location-outline" style={{ marginLeft: 6, fontSize: 16, color: "#000" }} />
+                        <Text style={[theme.H1, theme.primary]}>Get location</Text>
+                    </View>
+                </View>
+
                 <Text>{address}</Text>
-                <Text style={[theme.H2, theme.marginTop20]}>Contact</Text>
+                <View style={{ marginTop: 20, flexDirection: "row" }}>
+                    <View style={{ flex: 1 }}>
+                        <Text style={[theme.H1]}>Contact</Text>
+                    </View>
+                    <View style={{ flexDirection: "row" }}>
+                        <TouchableOpacity onPress={() => openLink("")} style={theme.marginHorizontal10}>
+                            <Text><AntDesign name="facebook-square" style={styles.Icons} /></Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => openLink("")} style={theme.marginHorizontal10}>
+                            <Text><AntDesign name="google" style={styles.Icons} /></Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => openLink("")} style={theme.marginHorizontal10}>
+                            <Text><AntDesign name="twitter" style={styles.Icons} /></Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => openLink("")} style={theme.marginHorizontal10}>
+                            <Text><AntDesign name="instagram" style={styles.Icons} /></Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
                 <Text>{address}</Text>
                 <CustomButton
                     title="Enquire Now"
@@ -43,10 +96,15 @@ export default function UserView({ route }: any) {
                     style={{
                         marginTop: 18,
                     }}
-                    onPress={() => { }}
+                    onPress={() => {
+                        navigation.navigate('userenquiry' as never)
+                    }}
                     IconsRight={<Entypo name="mail" style={{ fontSize: 20, color: "#fff" }} />}
                 />
-                <Text style={[theme.H2, theme.marginTop20]}>Career</Text>
+                <View style={{ marginTop: 20, flexDirection: "row" }}>
+                    <Text style={[theme.H1]}>Career</Text>
+                    <FontAwesome5 name="toolbox" style={{ marginLeft: 4, fontSize: 20, color: "#000" }} />
+                </View>
                 <CustomButton
                     title="Upload Resume"
                     filled
@@ -56,7 +114,7 @@ export default function UserView({ route }: any) {
                     onPress={() => { }}
                     IconsRight={<FontAwesome name="upload" style={{ fontSize: 20, color: "#fff" }} />}
                 />
-                <Text style={[theme.H2, theme.marginTop20]}>Preview images</Text>
+                <Text style={[theme.H1, theme.marginTop20]}>Preview images</Text>
                 {images && <FlatList
                     data={images}
                     renderItem={renderItem}
@@ -65,7 +123,7 @@ export default function UserView({ route }: any) {
                     horizontal={true}
                 />}
             </View>
-        </ScrollView>
+        </ScrollView >
     )
 }
 
@@ -86,4 +144,17 @@ const styles = StyleSheet.create({
         color: 'black',
         width: '20%',
     },
+    bage: {
+        backgroundColor: "#FF3131",
+        color: "#fff",
+        padding: 4,
+        marginHorizontal: 2,
+        fontSize: 12
+    },
+    Icons: {
+        fontSize: 16,
+        color: 'black',
+        width: '20%',
+    },
+
 });

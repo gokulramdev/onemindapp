@@ -30,5 +30,5 @@ export {
     OtpScreen,
     ChangePassword,
     BusinessEnquiry,
-    UserEnquiry
+    UserEnquiry,
 }

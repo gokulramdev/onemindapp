@@ -1,79 +1,121 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+## INSTALL DEPENDENCY
 
-# Getting Started
+`$ yarn`
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## INSTALL THE DEBUG APP
 
-## Step 1: Start the Metro Server
+`$ react-native run-android`
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## BUILD
 
-To start Metro, run the following command from the _root_ of your React Native project:
+Install dependencies, run the following command
 
-```bash
-# using npm
-npm start
-
-# OR using Yarn
-yarn start
+```
+$ cd android && ENVFILE=.env.development ./gradlew clean && cd .. &&
 ```
 
-## Step 2: Start your Application
+Use any following command to install debug app.
+`$ npm run buildDevelopmentDebug`
+`$ npm run buildStagingDebug`
+`$ npm run buildProductionDebug`
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+## START THE DEBUG APP
 
-### For Android
+`$ npm start`
+Or to start in a different port
+`npm start -- --port=8082`
+Or with reset cache
+`$ npm start -- --port=8082 --reset-cache`
 
-```bash
-# using npm
-npm run android
+## For production ready builds
 
-# OR using Yarn
-yarn android
-```
+To create the assemeble release (apk).
+`$ cd android && ./gradlew assembleRelease` .
 
-### For iOS
+To create actual release (aar) for internal testing
+`$ cd android && ENVFILE=.env.staging ./gradlew bundleStagingRelease`
 
-```bash
-# using npm
-npm run ios
+To create actual release (aar) for internal testing
+`$ cd android && ENVFILE=.env.production ./gradlew bundleProductionRelease && cd ..`
 
-# OR using Yarn
-yarn ios
-```
+### Different environments (Not tested)
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+Save config for different environments in different files: .env.staging, .env.production, etc.
+By default react-native-config will read from .env file, but you can change it when building or releasing your app.
+The simplest approach is to tell it what file to read with an environment variable, like:
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+#### ANDROID debug builds (For all ENV)
 
-## Step 3: Modifying your App
+`$ npm run buildDevelopmentDebug`
+`$ npm run buildStagingDebug`
+`$ npm run buildProductionDebug`
 
-Now that you have successfully run the app, let's modify it.
+#### ANDROID (For production release)
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+`$ ENVFILE=.env.production react-native run-android`
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+`$ ENVFILE=.env.development react-native run-android --variant=stagingDebug --appIdSuffix=staging`
 
-## Congratulations! :tada:
+#### IOS (For staging)
 
-You've successfully run and modified your React Native App. :partying_face:
+`$ yarn`
+`$ PROJECT_PATH='/Users/muraligs/projects/consumer/' pod install`
 
-### Now what?
+`$ ENVFILE=.env.staging react-native run-ios`
+or
+Use XCode
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+## DEEP LINK
 
-# Troubleshooting
+The following code shows on how to test a deep link. For more information refer this [link](https://reactnavigation.org/docs/deep-linking)
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+`$ adb shell am start -W -a android.intent.action.VIEW -d "coreful.instock.consumer://home/orders" cft.instock.consumer`
 
-# Learn More
+with flavors
 
-To learn more about React Native, take a look at the following resources:
+`$ adb shell am start -W -a android.intent.action.VIEW -d "coreful.instock.consumer://home/cart" com.instockconsumerapp.staging`
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+## DEPRECATED NOTES
+
+- The dependency '@react-native-community/viewpager' is addeded for 'react-native-scrollable-tab-view' library. If we no more use this library, then we can remove this library.
+
+## COMMON ERRORS
+
+- react navigation build errror - [git hub ticket](https://github.com/react-navigation/react-navigation/issues/7981)
+- Error - "label is not a function (From bottom tab navigation).
+  FIX - pass ' tabBarLabel: "" ' in ' Tab.Screen (component) -> options (props) '
+
+## Other info
+
+For renaming the package name
+https://stackoverflow.com/questions/37389905/change-package-name-for-android-in-react-native
+
+## PlantUML
+
+VS code settings update
+Set "Plantuml: Export Out Dir" to '**designs**/out'
+
+#### WINDOWS Version
+
+yarn
+$env:ENVFILE = '.env.development'
+yarn run buildDevelopmentDebugWindows
+
+### update local.properties
+
+sdk.dir=C:\\Users\\<Username>\\AppData\\Local\\Android\\Sdk
+
+cd android
+.\gradlew.bat clean --debug
+
+### Github issues
+
+1. local.properties file is tracked already, so to ignore local changes please use the following command to
+   prevent that from adding to the diff list.
+   `$ git update-index --assume-unchanged "android/local.properties"`
+
+To revert that change
+`$ git update-index --no-assume-unchanged "android/local.properties"`
+
+The following command is added to prevent ' ^M ' that is added automatically. Experimental change. Please let us know if you face any issues.
+`$ git config --global core.autocrlf true`

@@ -1,16 +1,43 @@
 import { View, Text, Image, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import theme from '../theme'
 import { getToken } from '../hooks/useToken';
 import { CustomTextInput, AlertModal } from '../components';
+import { useGetProfile } from '../hooks/authData';
+import { useAtom } from 'jotai';
+import { tokenAtom } from '../store/tokenAtom';
 
 export default function Profile({ navigation }: any) {
 
     const [modalVisible, setModalVisible] = useState(false);
 
-    useEffect(() => {
-        console.log("test_token", getToken())
+    const { getProfileQueryHelper } = useGetProfile({ isEnabled: true })
+    console.log("getProfileQueryHelper", getProfileQueryHelper?.data)
+    const [userToken, setToken] = useAtom(tokenAtom)
+
+    const [formState, setFormState] = useState<{
+        mobile: string,
+        email: string,
+        name: string
+    }>({
+        mobile: "",
+        email: "",
+        name: ""
+    })
+    const logout = useCallback(async () => {
+        // await AsyncStorage.clear()
+        setToken(undefined)
     }, [])
+
+    useEffect(() => {
+        if (getProfileQueryHelper?.data) {
+            setFormState({
+                mobile: getProfileQueryHelper?.data?.mobile,
+                email: getProfileQueryHelper?.data?.email,
+                name: getProfileQueryHelper?.data?.name,
+            })
+        }
+    }, [getProfileQueryHelper?.data])
 
     return (
         <View style={theme.marginTop10}>
@@ -23,14 +50,23 @@ export default function Profile({ navigation }: any) {
                 <CustomTextInput
                     label="Full name"
                     placeholder="Enter your full name"
+                    value={formState?.name}
+                    onChangeText={(data) => setFormState({ ...formState, name: data })}
+
                 />
                 <CustomTextInput
                     label="Email address"
                     placeholder="Enter email address"
+                    value={formState?.email}
+                    onChangeText={(data) => setFormState({ ...formState, email: data })}
+
                 />
                 <CustomTextInput
                     label="Phone number"
                     placeholder="Enter Phone number"
+                    value={formState?.mobile}
+                    onChangeText={(data) => setFormState({ ...formState, mobile: data })}
+                    keyboardType='number-pad'
                 />
             </View>
             <View>
@@ -51,7 +87,7 @@ export default function Profile({ navigation }: any) {
             </View>
             <View>
                 <TouchableOpacity
-                    onPress={() => { }}
+                    onPress={logout}
                 >
                     <Text style={[theme.H1, theme.marginHorizontal20, theme.marginTop10, theme.primary]}>Logout</Text>
                 </TouchableOpacity>

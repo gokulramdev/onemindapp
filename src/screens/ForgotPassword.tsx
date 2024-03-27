@@ -4,11 +4,19 @@ import {
     Pressable,
     SafeAreaView,
 } from 'react-native';
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import COLORS from '../constants/colors';
 import { CustomButton, CustomTextInput } from "../components"
+import { useAuthResetpassword } from '../hooks/authData';
 
 const ForgotPassword = ({ navigation }: any) => {
+
+    const { restpasswordMutationHelper } = useAuthResetpassword()
+    const [formState, setFormState] = useState("")
+
+    const onSubmit = useCallback(() => {
+        restpasswordMutationHelper?.mutate({ mobile: formState })
+    }, [formState])
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -33,8 +41,10 @@ const ForgotPassword = ({ navigation }: any) => {
                     </Text>
                 </View>
                 <CustomTextInput
-                    label="Email address"
-                    placeholder="Enter email address"
+                    label="Phone Number"
+                    placeholder="Enter Phone Number"
+                    onChangeText={(data) => setFormState(data)}
+                    keyboardType='number-pad'
                 />
 
 
@@ -45,7 +55,7 @@ const ForgotPassword = ({ navigation }: any) => {
                         marginTop: 18,
                         marginBottom: 4,
                     }}
-                    onPress={() => navigation.navigate("otpsreen")}
+                    onPress={onSubmit}
                 />
                 <View
                     style={{

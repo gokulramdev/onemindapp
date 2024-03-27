@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Button, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { CustomButton, CustomSearchInput } from '../components';
 import _ from 'lodash';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -7,6 +7,7 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { useGetLocation, useGetCategory } from '../hooks/homeData';
 import { useFocusEffect } from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Toast from 'react-native-toast-message';
 
 
 
@@ -77,7 +78,6 @@ export default function HomeScreen({ navigation }: any) {
         }, [])
     );
 
-    console.log("filterLocation", filterLocation)
     return (
         <View style={{ marginHorizontal: 12 }}>
             <CustomSearchInput
@@ -147,15 +147,16 @@ export default function HomeScreen({ navigation }: any) {
                     marginBottom: 4,
                 }}
                 onPress={() => {
-                    setShowCategoryList(false)
-                    setShowLocationList(false)
-                    navigation.navigate("userview", {
-                        location: location?.id,
-                        category: category?.id,
-                    })
+                    if (location?.id && category?.id) {
+                        setShowCategoryList(false)
+                        setShowLocationList(false)
+                        navigation.navigate("homesearchdetail", {
+                            location: location?.id,
+                            category: category?.id,
+                        })
+                    }
                 }}
                 IconsLeft={<AntDesign name="search1" style={{ fontSize: 20, color: "#fff" }} />}
-
             />
         </View>
     );
