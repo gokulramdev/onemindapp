@@ -12,7 +12,7 @@ import { useAuthResetpassword } from '../hooks/authData';
 const ForgotPassword = ({ navigation }: any) => {
 
     const { restpasswordMutationHelper } = useAuthResetpassword()
-    const [formState, setFormState] = useState("")
+    const [formState, setFormState] = useState("7708084829")
 
     const onSubmit = useCallback(() => {
         restpasswordMutationHelper?.mutate({ mobile: formState })

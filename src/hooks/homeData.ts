@@ -1,6 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import repo from "../repo";
 import _ from "lodash";
+import { Alert } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 interface Props {
     isEnabled: boolean
@@ -93,3 +95,38 @@ export const useGetHomeSearchDetail = ({ queryParams, isEnabled = false }: HomeD
 
     return { getBusinessQueryHelper }
 }
+
+
+export const useUploadResume = () => {
+
+    const uploadResumeMutationHelper = useMutation({
+        mutationFn: repo.uploadResume,
+        onSuccess: (response) => {
+            Alert.alert("ok")
+        },
+        onError: (error) => {
+            return error
+        },
+    })
+    return { uploadResumeMutationHelper }
+}
+
+
+export const useUserEnquiry = () => {
+
+    const navigation = useNavigation()
+
+    const userEnquiryMutationHelper = useMutation({
+        mutationFn: repo.userEnquiry,
+        onSuccess: (response) => {
+            navigation.goBack()
+        },
+        onError: (error) => {
+            return error
+        },
+    })
+    return { userEnquiryMutationHelper }
+}
+
+
+

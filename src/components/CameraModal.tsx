@@ -2,13 +2,11 @@ import React, { useCallback } from 'react';
 import { Modal, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 import theme from '../theme';
 
-const AlertModal = ({ modalVisible, setModalVisible, onSubmit }: any) => {
+const CameraModal = ({ isShow, setIsShow, openImagePicker, openCamera }: any) => {
 
 
     const onConfirm = useCallback(() => {
-        (onSubmit) && onSubmit()
-        setModalVisible(!modalVisible)
-        Alert.alert("ok")
+        setIsShow(!isShow)
     }, [])
 
     return (
@@ -16,29 +14,28 @@ const AlertModal = ({ modalVisible, setModalVisible, onSubmit }: any) => {
         <Modal
             animationType="slide"
             transparent={true}
-            visible={modalVisible}
+            visible={isShow}
             onRequestClose={() => {
-                setModalVisible(!modalVisible);
+                setIsShow(false);
             }}>
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                    <Text style={[theme.H1]}>Are you sure want delete account?</Text>
 
                     <View style={[theme.flexRow, theme.marginTop20]}>
                         <View style={{ marginRight: 20 }}>
                             <TouchableOpacity
                                 style={[theme.primarybutton]}
-                                onPress={onConfirm}
+                                onPress={openImagePicker}
                             >
-                                <Text style={{ color: "#fff" }}>Confirm</Text>
+                                <Text style={{ color: "#fff" }}>open Gallery</Text>
                             </TouchableOpacity>
                         </View>
                         <View >
                             <TouchableOpacity
                                 style={[theme.secondarybutton]}
-                                onPress={() => setModalVisible(!modalVisible)}
+                                onPress={openCamera}
                             >
-                                <Text style={{ color: "#6D6D6D" }}>Cancel</Text>
+                                <Text style={{ color: "#6D6D6D" }}>Open Camera</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -72,4 +69,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AlertModal;
+export default CameraModal;

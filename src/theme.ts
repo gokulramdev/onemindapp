@@ -117,6 +117,12 @@ const theme = StyleSheet.create({
   marginBottom30: {
     marginBottom: 30
   },
+  marginBottom50: {
+    marginBottom: 50
+  },
+  marginBottom100: {
+    marginBottom: 100
+  },
   flex1: {
     flex: 1
   },

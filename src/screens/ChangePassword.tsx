@@ -1,14 +1,31 @@
-import {
-    View,
-    Text,
-    Pressable,
-    SafeAreaView,
-} from 'react-native';
-import React, { useState } from 'react';
+import { View, Text, SafeAreaView } from 'react-native';
+import React, { useCallback, useState } from 'react';
 import COLORS from '../constants/colors';
-import { CustomButton, CustomCheckBox, CustomPasswordInput, CustomTextInput } from "../components"
+import { CustomButton, CustomPasswordInput } from "../components"
+import { useChangePassword } from '../hooks/authData';
+import { resetUserDataAtom } from '../store/resetUserDataAtom';
+import { useAtom } from 'jotai';
 
-const ChangePassword = ({ navigation }: any) => {
+const ChangePassword = () => {
+    const { changePasswordMutationHelper } = useChangePassword()
+    const [userData] = useAtom(resetUserDataAtom)
+
+    const [formState, setFormState] = useState<{
+        currentPassword: string,
+        newpassword: string,
+        confirmnewpassword: string
+    }>({
+        currentPassword: "",
+        newpassword: "",
+        confirmnewpassword: ""
+    })
+
+    const onSubmit = useCallback(() => {
+        changePasswordMutationHelper.mutate({
+            currentPassword: formState?.currentPassword,
+            newPassword: formState?.newpassword,
+        })
+    }, [userData, formState])
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -34,25 +51,30 @@ const ChangePassword = ({ navigation }: any) => {
                 </View>
                 <CustomPasswordInput
                     label="Current password"
-                    placeholder="Enter current password"
+                    placeholder="Enter Current password"
+                    onChangeText={(data) => setFormState({ ...formState, currentPassword: data })}
+
                 />
                 <CustomPasswordInput
                     label="Create new password"
-                    placeholder="Enter your password"
+                    placeholder="Enter new password"
+                    onChangeText={(data) => setFormState({ ...formState, newpassword: data })}
+
                 />
                 <CustomPasswordInput
                     label="Confirm new password"
                     placeholder="confirm new password"
+                    onChangeText={(data) => setFormState({ ...formState, confirmnewpassword: data })}
                 />
 
                 <CustomButton
-                    title="Reset New Password"
+                    title="Reset Password"
                     filled
                     style={{
                         marginTop: 18,
                         marginBottom: 4,
                     }}
-                    onPress={() => { }}
+                    onPress={onSubmit}
                 />
             </View>
         </SafeAreaView>

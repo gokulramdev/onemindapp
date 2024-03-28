@@ -9,6 +9,9 @@ import { useGetLiveTelecast } from '../hooks/homeData';
 export default function LiveTelecast() {
     const { width, height } = Dimensions.get('window')
     const { getLiveTelecastQueryHelper } = useGetLiveTelecast({ isEnabled: true });
+
+    const { live = "", previous = "" } = getLiveTelecastQueryHelper?.data ?? {}
+    console.log("getLiveTelecastQueryHelper",)
     return (
         <View style={theme.marginHorizontal20}>
             <View>
@@ -16,7 +19,7 @@ export default function LiveTelecast() {
             </View>
             <View style={theme.marginTop20}>
                 <YouTube
-                    videoId="si=I-ipfzD5AFy_do1w"
+                    videoId={live}
                     height={height * 0.4}
                 />
             </View>
@@ -25,7 +28,7 @@ export default function LiveTelecast() {
             </View>
             <View style={theme.marginTop20}>
                 <YouTube
-                    videoId="si=I-ipfzD5AFy_do1w"
+                    videoId={previous}
                     height={height * 0.4}
                 />
             </View>

@@ -5,13 +5,33 @@ import {
     SafeAreaView,
     ScrollView,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import COLORS from '../constants/colors';
 import { CustomButton, CustomTextInput } from "../components"
 import Entypo from 'react-native-vector-icons/Entypo';
+import { useUserEnquiry } from '../hooks/homeData';
 
 
-const UserEnquiry = ({ navigation }: any) => {
+const UserEnquiry = ({ route }: any) => {
+    const { businessId } = route?.params;
+
+    const { userEnquiryMutationHelper } = useUserEnquiry()
+
+    const [formState, setFormState] = useState<{
+        name: string,
+        email: string,
+        mobile: string,
+        enquiry: string,
+    }>({
+        name: "",
+        email: "",
+        mobile: "",
+        enquiry: "",
+    })
+
+    const onSubmit = useCallback(() => {
+        userEnquiryMutationHelper?.mutate({ ...formState, businessId })
+    }, [formState])
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -39,14 +59,21 @@ const UserEnquiry = ({ navigation }: any) => {
                     <CustomTextInput
                         label="Your full name"
                         placeholder="Enter your full name"
+                        onChangeText={(data) => setFormState({ ...formState, name: data })}
+
                     />
                     <CustomTextInput
                         label="Email address"
                         placeholder="Enter email address"
+                        onChangeText={(data) => setFormState({ ...formState, email: data })}
+
                     />
                     <CustomTextInput
                         label="Contact number"
                         placeholder="Enter contact number"
+                        onChangeText={(data) => setFormState({ ...formState, mobile: data })}
+                        keyboardType='number-pad'
+
                     />
 
                     <CustomTextInput
@@ -55,10 +82,12 @@ const UserEnquiry = ({ navigation }: any) => {
                         numberOfLines={4}
                         editable
                         multiline
+                        onChangeText={(data) => setFormState({ ...formState, enquiry: data })}
+
                     />
                     <CustomButton
                         IconsRight={<Entypo name="mail" style={{ fontSize: 20, color: "#fff" }} />}
-                        onPress={() => { }} title='Enquire Now' filled />
+                        onPress={onSubmit} title='Enquire Now' filled />
                 </View>
             </ScrollView>
         </SafeAreaView>

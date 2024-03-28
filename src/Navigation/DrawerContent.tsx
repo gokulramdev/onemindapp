@@ -26,7 +26,7 @@ const DrawerContent = ({ navigation }: any) => {
                 />
             </View>
             <View style={theme.marginTop40}>
-                <TouchableOpacity onPress={() => navigateTo('home')}>
+                <TouchableOpacity onPress={() => navigateTo('homesearchtab')}>
                     <View style={styles.profiletab}>
                         <Text style={styles.profileContent}>Home</Text>
                     </View>
@@ -41,7 +41,7 @@ const DrawerContent = ({ navigation }: any) => {
                         <Text style={styles.profileContent}>Live telecast</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigateTo('contact')}>
+                <TouchableOpacity onPress={() => navigateTo('contacttab')}>
                     <View style={styles.profiletab}>
                         <Text style={styles.profileContent}>Contact us</Text>
                     </View>

@@ -39,6 +39,19 @@ const NewsScreen = () => {
 
     )
 }
+
+const ContactUsScreen = () => {
+    return (
+        <Stack.Navigator initialRouteName='contactus' screenOptions={{
+            animationEnabled: false,
+            headerShown: false
+        }}>
+            <Stack.Screen name="contactus" component={Contactus} />
+            <Stack.Screen name="businessenquiry" component={BusinessEnquiry} />
+        </Stack.Navigator>
+
+    )
+}
 const BottomTabNav = () => {
 
     const [userToken] = useAtom(tokenAtom)
@@ -88,7 +101,7 @@ const BottomTabNav = () => {
                     )
                 }} />
 
-            <Tab.Screen name="contact" component={Contactus}
+            <Tab.Screen name="contacttab" component={ContactUsScreen}
                 options={{
                     tabBarLabel: () => null,
                     tabBarIcon: (iconProps) => (
@@ -111,9 +124,7 @@ const BottomTabNav = () => {
             <Tab.Screen name="changepassword" component={ChangePassword}
                 options={{ tabBarLabel: () => null, tabBarButton: () => null, header: () => null }}
             />
-            <Tab.Screen name="businessenquiry" component={BusinessEnquiry}
-                options={{ tabBarLabel: () => null, tabBarButton: () => null, header: () => null }}
-            />
+
         </Tab.Navigator>
     )
 };

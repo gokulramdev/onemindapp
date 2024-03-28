@@ -4,11 +4,31 @@ import {
     Pressable,
     SafeAreaView,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import COLORS from '../constants/colors';
-import { CustomButton, CustomCheckBox, CustomPasswordInput, CustomTextInput } from "../components"
+import { CustomButton, CustomPasswordInput } from "../components"
+import { useNewPassword } from '../hooks/authData';
+import { resetUserDataAtom } from '../store/resetUserDataAtom';
+import { useAtom } from 'jotai';
 
 const NewPassword = ({ navigation }: any) => {
+    const { newPasswordMutationHelper } = useNewPassword()
+    const [userData] = useAtom(resetUserDataAtom)
+
+    const [formState, setFormState] = useState<{
+        password: string,
+        newpassword: string
+    }>({
+        newpassword: "",
+        password: "",
+    })
+
+    const OnSubmit = useCallback(() => {
+        newPasswordMutationHelper.mutate({
+            password: formState?.password,
+            id: userData?.user.id
+        })
+    }, [userData, formState])
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -35,10 +55,14 @@ const NewPassword = ({ navigation }: any) => {
                 <CustomPasswordInput
                     label="Create new password"
                     placeholder="Enter your password"
+                    onChangeText={(data) => setFormState({ ...formState, password: data })}
+
                 />
                 <CustomPasswordInput
                     label="Confirm new password"
                     placeholder="confirm new password"
+                    onChangeText={(data) => setFormState({ ...formState, newpassword: data })}
+
                 />
 
                 <CustomButton
@@ -48,7 +72,7 @@ const NewPassword = ({ navigation }: any) => {
                         marginTop: 18,
                         marginBottom: 4,
                     }}
-                    onPress={() => { }}
+                    onPress={OnSubmit}
                 />
 
                 <View

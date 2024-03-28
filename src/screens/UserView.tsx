@@ -1,8 +1,8 @@
-import { View, Text, StyleSheet, Image, ScrollView, FlatList, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Image, ScrollView, FlatList, TouchableOpacity, SafeAreaView } from 'react-native'
 import React, { useMemo } from 'react'
 import { CarouselComponent, CustomButton } from '../components'
 import theme from '../theme'
-import { useGetHomeSearchDetail } from '../hooks/homeData';
+import { useGetHomeSearchDetail, useUploadResume } from '../hooks/homeData';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Foundation from 'react-native-vector-icons/Foundation';
@@ -11,16 +11,18 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import DocumentPicker from 'react-native-document-picker'
+
 
 export default function UserView({ route }: any) {
     const { location } = route.params;
     const navigation = useNavigation()
 
     const { getBusinessQueryHelper } = useGetHomeSearchDetail({ isEnabled: !!location, queryParams: route.params })
-    const { name = "", images = [], overView = "", address = "", category = {} } = getBusinessQueryHelper?.data ?? {}
+    const { id = "", name = "", images = [], overView = "", address = "", category = {} } = getBusinessQueryHelper?.data ?? {}
 
 
-
+    const { uploadResumeMutationHelper } = useUploadResume()
     const renderItem = ({ item }: any) => (
         <View style={styles.itemContainer}>
             <Image
@@ -38,91 +40,117 @@ export default function UserView({ route }: any) {
             .catch(err => console.error('An error occurred', err));
     };
 
+    const uploadFile = async () => {
+
+        try {
+            const doc: any = await DocumentPicker.pick({
+                // type: [DocumentPicker.types.doc, DocumentPicker.types.pdf]
+            })
+            let formData = new FormData();
+            formData.append('file', doc[0]);
+            formData.append('id', "6604132c21a065d0146472d7")
+            console.log("formData", formData)
+            // uploadResumeMutationHelper?.mutate(formData)
+        } catch (err) {
+            if (DocumentPicker.isCancel(err)) {
+                console.log("doc_up", err)
+            } else {
+                console.log("doc_up", err)
+            }
+        }
+
+    };
+
+
 
     return (
         <ScrollView>
-            <View style={[theme.marginTop30, theme.marginHorizontal20, { marginBottom: 50 }]}>
-                <View style={{ flexDirection: "row" }}>
-                    <View style={{ flex: 1 }}>
-                        <Text style={[theme.H1, theme.marginBottom10]}>{name}</Text>
-                    </View>
+            <SafeAreaView>
+                <View style={[theme.marginTop30, theme.marginHorizontal20]}>
                     <View style={{ flexDirection: "row" }}>
-                        <Text style={[theme.H2, theme.marginBottom10, styles.bage]}>{getBusinessQueryHelper?.data?.location?.name}</Text>
-                        <Text style={[theme.H2, theme.marginBottom10, styles.bage]}>{category?.name}</Text>
+                        <View style={{ flex: 1 }}>
+                            <Text style={[theme.H1, theme.marginBottom10]}>{name}</Text>
+                        </View>
+                        <View style={{ flexDirection: "row" }}>
+                            <Text style={[theme.H2, theme.marginBottom10, styles.bage]}>{getBusinessQueryHelper?.data?.location?.name}</Text>
+                            <Text style={[theme.H2, theme.marginBottom10, styles.bage]}>{category?.name}</Text>
+                        </View>
                     </View>
-                </View>
-                <CarouselComponent data={images} />
-                <View style={{ marginTop: 20, flexDirection: "row" }}>
-                    <Text style={[theme.H1]}>Overview</Text>
-                    <Foundation name="info" style={{ marginLeft: 4, fontSize: 20, color: "#000" }} />
-                </View>
+                    <CarouselComponent data={images} />
+                    <View style={{ marginTop: 20, flexDirection: "row" }}>
+                        <Text style={[theme.H1]}>Overview</Text>
+                        <Foundation name="info" style={{ marginLeft: 4, fontSize: 20, color: "#000" }} />
+                    </View>
 
-                <Text style={[theme.H3]}>{overView}</Text>
-                <View style={{ marginTop: 20, flexDirection: "row" }}>
-                    <View style={{ flex: 1, flexDirection: "row" }}>
-                        <Text style={[theme.H1]}>Address</Text>
-                        <Entypo name="location" style={{ marginLeft: 6, fontSize: 16, color: "#000" }} />
+                    <Text style={[theme.H3]}>{overView}</Text>
+                    <View style={{ marginTop: 20, flexDirection: "row" }}>
+                        <View style={{ flex: 1, flexDirection: "row" }}>
+                            <Text style={[theme.H1]}>Address</Text>
+                            <Entypo name="location" style={{ marginLeft: 6, fontSize: 16, color: "#000" }} />
+                        </View>
+                        <View style={{ flexDirection: "row" }}>
+                            <Ionicons name="location-outline" style={{ marginLeft: 6, fontSize: 16, color: "#000" }} />
+                            <Text style={[theme.H1, theme.primary]}>Get location</Text>
+                        </View>
                     </View>
-                    <View style={{ flexDirection: "row" }}>
-                        <Ionicons name="location-outline" style={{ marginLeft: 6, fontSize: 16, color: "#000" }} />
-                        <Text style={[theme.H1, theme.primary]}>Get location</Text>
-                    </View>
-                </View>
 
-                <Text>{address}</Text>
-                <View style={{ marginTop: 20, flexDirection: "row" }}>
-                    <View style={{ flex: 1 }}>
-                        <Text style={[theme.H1]}>Contact</Text>
+                    <Text>{address}</Text>
+                    <View style={{ marginTop: 20, flexDirection: "row" }}>
+                        <View style={{ flex: 1 }}>
+                            <Text style={[theme.H1]}>Contact</Text>
+                        </View>
+                        <View style={{ flexDirection: "row" }}>
+                            <TouchableOpacity onPress={() => openLink("")} style={theme.marginHorizontal10}>
+                                <Text><AntDesign name="facebook-square" style={styles.Icons} /></Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => openLink("")} style={theme.marginHorizontal10}>
+                                <Text><AntDesign name="google" style={styles.Icons} /></Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => openLink("")} style={theme.marginHorizontal10}>
+                                <Text><AntDesign name="twitter" style={styles.Icons} /></Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => openLink("")} style={theme.marginHorizontal10}>
+                                <Text><AntDesign name="instagram" style={styles.Icons} /></Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                    <View style={{ flexDirection: "row" }}>
-                        <TouchableOpacity onPress={() => openLink("")} style={theme.marginHorizontal10}>
-                            <Text><AntDesign name="facebook-square" style={styles.Icons} /></Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => openLink("")} style={theme.marginHorizontal10}>
-                            <Text><AntDesign name="google" style={styles.Icons} /></Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => openLink("")} style={theme.marginHorizontal10}>
-                            <Text><AntDesign name="twitter" style={styles.Icons} /></Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => openLink("")} style={theme.marginHorizontal10}>
-                            <Text><AntDesign name="instagram" style={styles.Icons} /></Text>
-                        </TouchableOpacity>
+                    <Text>{address}</Text>
+                    <CustomButton
+                        title="Enquire Now"
+                        filled
+                        style={{
+                            marginTop: 18,
+                        }}
+                        onPress={() => {
+
+                            navigation.navigate('userenquiry' as never, { businessId: id } as never)
+                        }}
+                        IconsRight={<Entypo name="mail" style={{ fontSize: 20, color: "#fff" }} />}
+                    />
+                    <View style={{ marginTop: 20, flexDirection: "row" }}>
+                        <Text style={[theme.H1]}>Career</Text>
+                        <FontAwesome5 name="toolbox" style={{ marginLeft: 4, fontSize: 20, color: "#000" }} />
                     </View>
+                    <CustomButton
+                        title="Upload Resume"
+                        filled
+                        style={{
+                            marginTop: 18,
+                        }}
+                        onPress={uploadFile}
+                        IconsRight={<FontAwesome name="upload" style={{ fontSize: 20, color: "#fff" }} />}
+                    />
+                    <Text style={[theme.H1, theme.marginTop20]}>Preview images</Text>
+                    {images && <FlatList
+                        data={images}
+                        renderItem={renderItem}
+                        keyExtractor={item => item?.id}
+                        showsHorizontalScrollIndicator
+                        horizontal={true}
+                    />}
                 </View>
-                <Text>{address}</Text>
-                <CustomButton
-                    title="Enquire Now"
-                    filled
-                    style={{
-                        marginTop: 18,
-                    }}
-                    onPress={() => {
-                        navigation.navigate('userenquiry' as never)
-                    }}
-                    IconsRight={<Entypo name="mail" style={{ fontSize: 20, color: "#fff" }} />}
-                />
-                <View style={{ marginTop: 20, flexDirection: "row" }}>
-                    <Text style={[theme.H1]}>Career</Text>
-                    <FontAwesome5 name="toolbox" style={{ marginLeft: 4, fontSize: 20, color: "#000" }} />
-                </View>
-                <CustomButton
-                    title="Upload Resume"
-                    filled
-                    style={{
-                        marginTop: 18,
-                    }}
-                    onPress={() => { }}
-                    IconsRight={<FontAwesome name="upload" style={{ fontSize: 20, color: "#fff" }} />}
-                />
-                <Text style={[theme.H1, theme.marginTop20]}>Preview images</Text>
-                {images && <FlatList
-                    data={images}
-                    renderItem={renderItem}
-                    keyExtractor={item => item?.id}
-                    showsHorizontalScrollIndicator
-                    horizontal={true}
-                />}
-            </View>
+            </SafeAreaView>
+
         </ScrollView >
     )
 }

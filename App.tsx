@@ -9,6 +9,8 @@ import { useAtom } from 'jotai';
 import { tokenAtom } from './src/store/tokenAtom';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message';
+import { SafeAreaView } from 'react-native';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 
 const queryClient =
@@ -71,13 +73,17 @@ const App = () => {
   };
   return (
     <QueryClientProvider client={queryClient}>
-      <NavigationContainer>
-        <StackNav />
-        <Toast />
-        <Toast config={toastConfig} />
-
-      </NavigationContainer>
+      <RootSiblingParent>
+        <SafeAreaView style={{ flex: 1 }}>
+          <NavigationContainer>
+            <StackNav />
+            <Toast />
+            <Toast config={toastConfig} />
+          </NavigationContainer>
+        </SafeAreaView>
+      </RootSiblingParent>
     </QueryClientProvider>
+
 
   );
 }

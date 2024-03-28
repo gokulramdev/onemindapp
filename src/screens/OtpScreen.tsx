@@ -4,11 +4,30 @@ import {
     Pressable,
     SafeAreaView,
 } from 'react-native';
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import COLORS from '../constants/colors';
 import { CustomButton, CustomTextInput } from "../components"
+import { useAuthOtpVerify, useAuthResendOtp } from '../hooks/authData';
+import { useAtom } from 'jotai';
+import { resetUserDataAtom } from '../store/resetUserDataAtom';
 
 const OtpScreen = ({ navigation }: any) => {
+    const { otpVerifyMutationHelper } = useAuthOtpVerify();
+    const { resendOtpMutationHelper } = useAuthResendOtp()
+    const [userData] = useAtom(resetUserDataAtom)
+
+    const [formState, setFormState] = useState("")
+
+    const onSubmit = useCallback(() => {
+        otpVerifyMutationHelper?.mutate({ code: formState, token: userData?.token })
+    }, [formState, userData])
+
+    const resendOtp = useCallback(() => {
+        resendOtpMutationHelper.mutate({
+            mobile: userData?.user.mobile,
+            id: userData?.user.id
+        })
+    }, [userData])
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -35,7 +54,8 @@ const OtpScreen = ({ navigation }: any) => {
                 <CustomTextInput
                     label="Enter OTP"
                     placeholder="Enter your OTP"
-
+                    onChangeText={setFormState}
+                    keyboardType='number-pad'
                 />
 
 
@@ -46,8 +66,7 @@ const OtpScreen = ({ navigation }: any) => {
                         marginTop: 18,
                         marginBottom: 4,
                     }}
-                    onPress={() => navigation.navigate("newpassword")}
-
+                    onPress={onSubmit}
                 />
                 <View
                     style={{
@@ -62,7 +81,17 @@ const OtpScreen = ({ navigation }: any) => {
                         marginVertical: 22,
                     }}>
                     <Text style={{ fontSize: 16, color: COLORS.black }}>
-                        Resend
+                        <Pressable onPress={resendOtp}>
+                            <Text
+                                style={{
+                                    fontSize: 16,
+                                    color: COLORS.primary,
+                                    fontWeight: '600',
+                                    marginLeft: 4,
+                                }}>
+                                Resend OTP
+                            </Text>
+                        </Pressable>
                     </Text>
                     <Pressable onPress={() => navigation.navigate('login')}>
                         <Text

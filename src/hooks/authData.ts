@@ -6,7 +6,9 @@ import { setData } from "./useToken";
 import { useAtom } from "jotai";
 import { tokenAtom } from "../store/tokenAtom";
 import { setAuthToken } from "../constants/axios";
-import Toast from 'react-native-toast-message';
+import { resetUserDataAtom } from "../store/resetUserDataAtom";
+import { showToast } from './functions'
+import { Alert } from "react-native";
 
 interface Props {
     isEnabled: boolean
@@ -27,11 +29,7 @@ export const useAuthLogin = () => {
         onError: (error: any) => {
             console.log("Hello_success",)
 
-            Toast.show({
-                type: 'error',
-                text1: 'Invaild',
 
-            });
             return error
         },
     })
@@ -56,11 +54,13 @@ export const useAuthRegister = () => {
 
 export const useAuthResetpassword = () => {
     const navigation = useNavigation()
+    const [_, setResetUserData] = useAtom(resetUserDataAtom)
 
     const restpasswordMutationHelper = useMutation({
         mutationFn: repo.resetpassword,
         onSuccess: (response) => {
             navigation.navigate('otpsreen' as never)
+            setResetUserData(response?.data)
         },
         onError: (error) => {
             return error
@@ -69,19 +69,34 @@ export const useAuthResetpassword = () => {
     return { restpasswordMutationHelper }
 }
 
-export const useAuthOtpReset = () => {
+export const useAuthResendOtp = () => {
     const navigation = useNavigation()
 
-    const OtprestMutationHelper = useMutation({
-        mutationFn: repo.resetpassword,
+    const resendOtpMutationHelper = useMutation({
+        mutationFn: repo.resendOTP,
         onSuccess: (response) => {
-            navigation.navigate('otpsreen' as never)
+
         },
         onError: (error) => {
             return error
         },
     })
-    return { OtprestMutationHelper }
+    return { resendOtpMutationHelper }
+}
+
+export const useAuthOtpVerify = () => {
+    const navigation = useNavigation()
+
+    const otpVerifyMutationHelper = useMutation({
+        mutationFn: repo.codeVerification,
+        onSuccess: (response) => {
+            navigation.navigate("newpassword" as never)
+        },
+        onError: (error) => {
+            return error
+        },
+    })
+    return { otpVerifyMutationHelper }
 }
 
 
@@ -97,6 +112,103 @@ export const useGetProfile = ({ isEnabled = false }: Props) => {
 
     return { getProfileQueryHelper }
 }
+
+
+
+export const useNewPassword = () => {
+    const navigation = useNavigation()
+
+    const newPasswordMutationHelper = useMutation({
+        mutationFn: repo.newPassword,
+        onSuccess: (response) => {
+            navigation.navigate("login" as never)
+        },
+        onError: (error) => {
+            return error
+        },
+    })
+    return { newPasswordMutationHelper }
+}
+
+export const useChangePassword = () => {
+    const navigation = useNavigation()
+
+    const changePasswordMutationHelper = useMutation({
+        mutationFn: repo.changePassword,
+        onSuccess: (response) => {
+            navigation.navigate("home" as never)
+        },
+        onError: (error) => {
+            return error
+        },
+    })
+    return { changePasswordMutationHelper }
+}
+
+
+
+export const useDeleteUser = () => {
+    const navigation = useNavigation()
+
+    const deleteuserMutationHelper = useMutation({
+        mutationFn: repo.deletAccount,
+        onSuccess: (response) => {
+            navigation.navigate("home" as never)
+        },
+        onError: (error) => {
+            return error
+        },
+    })
+    return { deleteuserMutationHelper }
+}
+
+
+
+export const useDeletAvatar = () => {
+    const navigation = useNavigation()
+
+    const deletAvatarMutationHelper = useMutation({
+        mutationFn: repo.deletAvatar,
+        onSuccess: (response) => {
+        },
+        onError: (error) => {
+            return error
+        },
+    })
+    return { deletAvatarMutationHelper }
+}
+
+
+
+export const useUploadAvatar = () => {
+    const navigation = useNavigation()
+
+    const uploadAvatarMutationHelper = useMutation({
+        mutationFn: repo.uploadAvatar,
+        onSuccess: (response) => {
+        },
+        onError: (error) => {
+            return error
+        },
+    })
+    return { uploadAvatarMutationHelper }
+}
+
+
+export const useUpdateProfile = () => {
+    const navigation = useNavigation()
+
+    const updateProfileMutationHelper = useMutation({
+        mutationFn: repo.updateProfile,
+        onSuccess: (response) => {
+        },
+        onError: (error) => {
+            return error
+        },
+    })
+    return { updateProfileMutationHelper }
+}
+
 
 
 

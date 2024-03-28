@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { categoryList, locationList, newsList } from "../types/homeRepoType";
+import { Alert } from "react-native";
 
 
 const homeRepo = () => {
@@ -25,6 +26,18 @@ const homeRepo = () => {
             return axios.get(`/home/search?${_params.toString()}`).then((res) => res.data)
         },
         getProfile: () => axios.get("/me").then((res) => res.data),
+
+        uploadResume: (params: any) => {
+            return axios.post('/home/resumeUpload', params, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            })
+        },
+
+        userEnquiry: (params: any) => axios.post('/home/enquiry', params),
+
+
+
+
 
     }
 }
