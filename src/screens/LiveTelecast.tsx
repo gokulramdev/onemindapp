@@ -1,35 +1,32 @@
-import { View, Text, Image, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Dimensions } from 'react-native'
 import React from 'react'
 import theme from '../theme'
-import Entypo from "react-native-vector-icons/Entypo"
 import YouTube from "react-native-youtube-iframe";
 import { useGetLiveTelecast } from '../hooks/homeData';
-
+import { Loader } from '../components';
 
 export default function LiveTelecast() {
-    const { width, height } = Dimensions.get('window')
+    const { height } = Dimensions.get('window');
     const { getLiveTelecastQueryHelper } = useGetLiveTelecast({ isEnabled: true });
+    const { live = "", previous = "" } = getLiveTelecastQueryHelper?.data ?? {};
 
-    const { live = "", previous = "" } = getLiveTelecastQueryHelper?.data ?? {}
-    console.log("getLiveTelecastQueryHelper",)
+    if (getLiveTelecastQueryHelper?.isLoading) {
+        return <Loader />
+    }
     return (
-        <View style={theme.marginHorizontal20}>
-            <View>
-                <Text style={[theme.H1, theme.textCenter]}>Live telecast</Text>
-            </View>
-            <View style={theme.marginTop20}>
+        <View style={styles.container}>
+            <View style={{ flex: 1 }} >
+                <Text style={[theme.H1, theme.textCenter, theme.marginBottom20]}>Live telecast</Text>
                 <YouTube
                     videoId={live}
-                    height={height * 0.4}
+                    height={height * 0.9}
                 />
             </View>
-            <View>
-                <Text style={[theme.H1, theme.textCenter]}>Previous live telecast</Text>
-            </View>
-            <View style={theme.marginTop20}>
+            <View style={{ flex: 2, marginTop: 80 }} >
+                <Text style={[theme.H1, theme.textCenter, theme.marginBottom20]}>Previous live telecast</Text>
                 <YouTube
                     videoId={previous}
-                    height={height * 0.4}
+                    height={height * 0.9}
                 />
             </View>
         </View>
@@ -39,14 +36,15 @@ export default function LiveTelecast() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        flexDirection: 'column',
+        marginHorizontal: 20,
+        justifyContent: "space-around",
     },
-    image: {
-        width: 200,
-        height: 200,
-        resizeMode: 'cover', // Adjust the resizeMode according to your preference
+    section: {
+        // flex: 1,
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        // marginVertical: 50,
+        marginHorizontal: 20
     },
-    streamingCard: {
-        flexDirection: "row",
-        marginTop: 30
-    }
 });

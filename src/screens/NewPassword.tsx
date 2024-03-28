@@ -1,34 +1,36 @@
-import {
-    View,
-    Text,
-    Pressable,
-    SafeAreaView,
-} from 'react-native';
-import React, { useCallback, useState } from 'react';
+import React from 'react';
+import { View, Text, Pressable, SafeAreaView } from 'react-native';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import COLORS from '../constants/colors';
 import { CustomButton, CustomPasswordInput } from "../components"
 import { useNewPassword } from '../hooks/authData';
 import { resetUserDataAtom } from '../store/resetUserDataAtom';
 import { useAtom } from 'jotai';
 
+const schema = yup.object().shape({
+    password: yup.string().required('Password is required').min(6, 'Password must be at least 6 characters'),
+    newPassword: yup.string()
+        .required('New password is required')
+        .min(6, 'New password must be at least 6 characters')
+        .oneOf([yup.ref('password')], 'Passwords must match'),
+});
+
 const NewPassword = ({ navigation }: any) => {
-    const { newPasswordMutationHelper } = useNewPassword()
-    const [userData] = useAtom(resetUserDataAtom)
+    const { newPasswordMutationHelper } = useNewPassword();
+    const [userData] = useAtom(resetUserDataAtom);
 
-    const [formState, setFormState] = useState<{
-        password: string,
-        newpassword: string
-    }>({
-        newpassword: "",
-        password: "",
-    })
+    const { control, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(schema),
+    });
 
-    const OnSubmit = useCallback(() => {
+    const onSubmit = (data: { password: string, newPassword: string }) => {
         newPasswordMutationHelper.mutate({
-            password: formState?.password,
+            password: data.password,
             id: userData?.user.id
-        })
-    }, [userData, formState])
+        });
+    };
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -43,7 +45,6 @@ const NewPassword = ({ navigation }: any) => {
                         }}>
                         New Password
                     </Text>
-
                     <Text
                         style={{
                             fontSize: 16,
@@ -52,19 +53,36 @@ const NewPassword = ({ navigation }: any) => {
                         Please create a new password that you don’t use on any other site.
                     </Text>
                 </View>
-                <CustomPasswordInput
-                    label="Create new password"
-                    placeholder="Enter your password"
-                    onChangeText={(data) => setFormState({ ...formState, password: data })}
-
+                <Controller
+                    control={control}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <CustomPasswordInput
+                            label="Create new password"
+                            placeholder="Enter your password"
+                            onChangeText={onChange}
+                            onBlur={onBlur}
+                            value={value}
+                            error={errors.password?.message}
+                        />
+                    )}
+                    name="password"
+                    defaultValue=""
                 />
-                <CustomPasswordInput
-                    label="Confirm new password"
-                    placeholder="confirm new password"
-                    onChangeText={(data) => setFormState({ ...formState, newpassword: data })}
-
+                <Controller
+                    control={control}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <CustomPasswordInput
+                            label="Confirm new password"
+                            placeholder="Confirm new password"
+                            onChangeText={onChange}
+                            onBlur={onBlur}
+                            value={value}
+                            error={errors.newPassword?.message}
+                        />
+                    )}
+                    name="newPassword"
+                    defaultValue=""
                 />
-
                 <CustomButton
                     title="Reset New Password"
                     filled
@@ -72,15 +90,13 @@ const NewPassword = ({ navigation }: any) => {
                         marginTop: 18,
                         marginBottom: 4,
                     }}
-                    onPress={OnSubmit}
+                    onPress={handleSubmit(onSubmit)}
                 />
-
                 <View
                     style={{
                         flexDirection: 'row',
                         justifyContent: 'center',
                     }}></View>
-
                 <View
                     style={{
                         flexDirection: 'row',

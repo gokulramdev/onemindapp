@@ -8,7 +8,7 @@ import { tokenAtom } from "../store/tokenAtom";
 import { setAuthToken } from "../constants/axios";
 import { resetUserDataAtom } from "../store/resetUserDataAtom";
 import { showToast } from './functions'
-import { Alert } from "react-native";
+import { userDetailsAtom } from "../store/userDetailsAtom";
 
 interface Props {
     isEnabled: boolean
@@ -17,19 +17,22 @@ interface Props {
 export const useAuthLogin = () => {
     const navigation = useNavigation()
     const [userToken, setToken] = useAtom(tokenAtom)
+    const [_, setUserDetails] = useAtom(userDetailsAtom)
 
     const loginMutationHelper = useMutation({
         mutationFn: repo.login,
         onSuccess: async (res) => {
+            console.log("error_tes", res)
+
             setData(res?.data.authToken)
             setToken(res?.data.authToken)
             setAuthToken(res?.data.authToken)
             navigation.navigate('home' as never)
+            setUserDetails(res?.data.user)
         },
         onError: (error: any) => {
-            console.log("Hello_success",)
-
-
+            console.log("error_tes", error)
+            showToast(error.response?.data?.message ?? "", true)
             return error
         },
     })
@@ -44,7 +47,8 @@ export const useAuthRegister = () => {
         onSuccess: (response) => {
             navigation.navigate('login' as never)
         },
-        onError: (error) => {
+        onError: (error: any) => {
+            showToast(error.response?.data?.message ?? "", true)
             return error
         },
     })
@@ -62,7 +66,8 @@ export const useAuthResetpassword = () => {
             navigation.navigate('otpsreen' as never)
             setResetUserData(response?.data)
         },
-        onError: (error) => {
+        onError: (error: any) => {
+            showToast(error.response?.data?.message ?? "", true)
             return error
         },
     })
@@ -77,7 +82,8 @@ export const useAuthResendOtp = () => {
         onSuccess: (response) => {
 
         },
-        onError: (error) => {
+        onError: (error: any) => {
+            showToast(error.response?.data?.message ?? "", true)
             return error
         },
     })
@@ -92,7 +98,8 @@ export const useAuthOtpVerify = () => {
         onSuccess: (response) => {
             navigation.navigate("newpassword" as never)
         },
-        onError: (error) => {
+        onError: (error: any) => {
+            showToast(error.response?.data?.message ?? "", true)
             return error
         },
     })
@@ -201,6 +208,7 @@ export const useUpdateProfile = () => {
     const updateProfileMutationHelper = useMutation({
         mutationFn: repo.updateProfile,
         onSuccess: (response) => {
+            showToast("Profile Updated")
         },
         onError: (error) => {
             return error

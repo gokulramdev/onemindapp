@@ -1,33 +1,37 @@
-import {
-    View,
-    Text,
-    Pressable,
-    SafeAreaView,
-} from 'react-native';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
+import { View, Text, Pressable, SafeAreaView } from 'react-native';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import COLORS from '../constants/colors';
 import { CustomButton, CustomTextInput } from "../components"
 import { useAuthOtpVerify, useAuthResendOtp } from '../hooks/authData';
 import { useAtom } from 'jotai';
 import { resetUserDataAtom } from '../store/resetUserDataAtom';
 
-const OtpScreen = ({ navigation }: any) => {
+const schema = yup.object().shape({
+    otp: yup.string().required('OTP is required').matches(/^[0-9]{6}$/, 'Please enter a valid 6-digit OTP'),
+});
+
+const OtpScreen = () => {
     const { otpVerifyMutationHelper } = useAuthOtpVerify();
-    const { resendOtpMutationHelper } = useAuthResendOtp()
-    const [userData] = useAtom(resetUserDataAtom)
+    const { resendOtpMutationHelper } = useAuthResendOtp();
+    const [userData] = useAtom(resetUserDataAtom);
 
-    const [formState, setFormState] = useState("")
+    const { control, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(schema),
+    });
 
-    const onSubmit = useCallback(() => {
-        otpVerifyMutationHelper?.mutate({ code: formState, token: userData?.token })
-    }, [formState, userData])
+    const onSubmit = useCallback((data: any) => {
+        otpVerifyMutationHelper?.mutate({ code: data.otp, token: userData?.token });
+    }, [otpVerifyMutationHelper, userData]);
 
     const resendOtp = useCallback(() => {
         resendOtpMutationHelper.mutate({
             mobile: userData?.user.mobile,
             id: userData?.user.id
-        })
-    }, [userData])
+        });
+    }, [resendOtpMutationHelper, userData]);
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -42,7 +46,6 @@ const OtpScreen = ({ navigation }: any) => {
                         }}>
                         Enter OTP
                     </Text>
-
                     <Text
                         style={{
                             fontSize: 16,
@@ -51,14 +54,22 @@ const OtpScreen = ({ navigation }: any) => {
                         Please Enter your OTP that you don’t use on any other site.
                     </Text>
                 </View>
-                <CustomTextInput
-                    label="Enter OTP"
-                    placeholder="Enter your OTP"
-                    onChangeText={setFormState}
-                    keyboardType='number-pad'
+                <Controller
+                    control={control}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <CustomTextInput
+                            label="Enter OTP"
+                            placeholder="Enter your OTP"
+                            onChangeText={onChange}
+                            onBlur={onBlur}
+                            value={value}
+                            keyboardType='number-pad'
+                            error={errors.otp?.message}
+                        />
+                    )}
+                    name="otp"
+                    defaultValue=""
                 />
-
-
                 <CustomButton
                     title="Submit OTP"
                     filled
@@ -66,21 +77,28 @@ const OtpScreen = ({ navigation }: any) => {
                         marginTop: 18,
                         marginBottom: 4,
                     }}
-                    onPress={onSubmit}
+                    onPress={handleSubmit(onSubmit)}
                 />
                 <View
                     style={{
                         flexDirection: 'row',
                         justifyContent: 'center',
                     }}></View>
-
                 <View
                     style={{
                         flexDirection: 'row',
                         justifyContent: 'center',
                         marginVertical: 22,
                     }}>
-                    <Text style={{ fontSize: 16, color: COLORS.black }}>
+                    <View style={{ flexDirection: "row" }}>
+                        <Text style={{
+                            fontSize: 16,
+                            color: "#000",
+                            fontWeight: '600',
+                            marginLeft: 4,
+                        }}>
+                            Resend
+                        </Text>
                         <Pressable onPress={resendOtp}>
                             <Text
                                 style={{
@@ -89,21 +107,10 @@ const OtpScreen = ({ navigation }: any) => {
                                     fontWeight: '600',
                                     marginLeft: 4,
                                 }}>
-                                Resend OTP
+                                OTP
                             </Text>
                         </Pressable>
-                    </Text>
-                    <Pressable onPress={() => navigation.navigate('login')}>
-                        <Text
-                            style={{
-                                fontSize: 16,
-                                color: COLORS.primary,
-                                fontWeight: '600',
-                                marginLeft: 4,
-                            }}>
-                            OTP
-                        </Text>
-                    </Pressable>
+                    </View>
                 </View>
             </View>
         </SafeAreaView>

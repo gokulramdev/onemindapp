@@ -1,32 +1,26 @@
-import {
-    View,
-    Text,
-    Pressable,
-    SafeAreaView,
-} from 'react-native';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
+import { View, Text, Pressable, SafeAreaView } from 'react-native';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import COLORS from '../constants/colors';
 import { CustomButton, CustomCheckBox, CustomPasswordInput, CustomTextInput } from "../components"
 import { useAuthLogin } from '../hooks/authData';
 
-
+const schema = yup.object().shape({
+    mobile: yup.string().required('Mobile number is required').matches(/^[0-9]{10}$/, 'Please enter a valid 10-digit mobile number'),
+    password: yup.string().required('Password is required'),
+});
 
 const Login = ({ navigation }: any) => {
-
-    const [isChecked, setIsChecked] = useState(false);
     const { loginMutationHelper } = useAuthLogin();
+    const { control, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(schema),
+    });
 
-    const [formState, setFormState] = useState<{
-        mobile: string,
-        password: string,
-    }>({
-        mobile: "",
-        password: "",
-    })
-
-    const onSubmit = useCallback(() => {
-        loginMutationHelper?.mutate(formState)
-    }, [formState])
+    const onSubmit = useCallback((data: any) => {
+        loginMutationHelper?.mutate(data);
+    }, [loginMutationHelper]);
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -41,7 +35,6 @@ const Login = ({ navigation }: any) => {
                         }}>
                         Login
                     </Text>
-
                     <Text
                         style={{
                             fontSize: 16,
@@ -50,19 +43,36 @@ const Login = ({ navigation }: any) => {
                         For the purpose of industry regulation, your details are required.
                     </Text>
                 </View>
-                <CustomTextInput
-                    label="Mobile Number"
-                    placeholder="Enter mobile number"
-                    onChangeText={(data) => setFormState({ ...formState, mobile: data })}
-                    keyboardType='number-pad'
+                <Controller
+                    control={control}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <CustomTextInput
+                            label="Mobile Number"
+                            placeholder="Enter mobile number"
+                            onChangeText={onChange}
+                            onBlur={onBlur}
+                            value={value}
+                            error={errors.mobile?.message}
+                        />
+                    )}
+                    name="mobile"
+                    defaultValue=""
                 />
-                <CustomPasswordInput
-                    label="Password"
-                    placeholder="Enter your password"
-                    onChangeText={(text) => setFormState({ ...formState, password: text })}
-
+                <Controller
+                    control={control}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <CustomPasswordInput
+                            label="Password"
+                            placeholder="Enter your password"
+                            onChangeText={onChange}
+                            onBlur={onBlur}
+                            value={value}
+                            error={errors.password?.message}
+                        />
+                    )}
+                    name="password"
+                    defaultValue=""
                 />
-
                 <View
                     style={{
                         alignItems: 'center',
@@ -70,9 +80,9 @@ const Login = ({ navigation }: any) => {
                     }}>
                     <View style={{ flex: 1 }}>
                         <CustomCheckBox
-                            label="Remenber Me"
-                            onPress={() => setIsChecked(!isChecked)}
-                            status={isChecked ? 'checked' : 'unchecked'}
+                            label="Remember Me"
+                            onPress={() => { }}
+                            status={'unchecked'}
                         />
                     </View>
                     <View style={{ justifyContent: 'flex-end', alignItems: 'center' }}>
@@ -95,9 +105,8 @@ const Login = ({ navigation }: any) => {
                         marginTop: 18,
                         marginBottom: 4,
                     }}
-                    onPress={onSubmit}
+                    onPress={handleSubmit(onSubmit)}
                 />
-
                 <View
                     style={{
                         flexDirection: 'row',
@@ -122,13 +131,11 @@ const Login = ({ navigation }: any) => {
                         }}
                     />
                 </View>
-
                 <View
                     style={{
                         flexDirection: 'row',
                         justifyContent: 'center',
                     }}></View>
-
                 <View
                     style={{
                         flexDirection: 'row',

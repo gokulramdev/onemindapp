@@ -6,12 +6,14 @@ interface CustomTextInputProps extends TextInputProps {
     label?: string;
     placeholder?: string;
     children?: ReactNode;
+    error?: string | null
 }
 
 const CustomTextInput: FC<CustomTextInputProps> = ({
     label,
     placeholder,
     style,
+    error,
     ...inputProps
 }) => {
     const [focus, setFocus] = useState(false);
@@ -26,6 +28,8 @@ const CustomTextInput: FC<CustomTextInputProps> = ({
                 numberOfLines={2}
                 {...inputProps}
             />
+            {error && <Text style={styles.error}>{error}</Text>}
+
         </View>
     );
 };
@@ -51,7 +55,9 @@ const styles = StyleSheet.create({
     inputOnFocus: {
         borderColor: COLORS.primary,
     },
-
+    error: {
+        color: "red"
+    }
 });
 
 export default CustomTextInput;

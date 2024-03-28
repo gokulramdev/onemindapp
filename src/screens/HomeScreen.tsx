@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { CustomButton, CustomSearchInput } from '../components';
 import _ from 'lodash';
@@ -7,7 +7,6 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import { useGetLocation, useGetCategory } from '../hooks/homeData';
 import { useFocusEffect } from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { showToast } from '../hooks/functions';
 
 
 
@@ -75,8 +74,6 @@ export default function HomeScreen({ navigation }: any) {
         React.useCallback(() => {
             setShowLocationList(false)
             setShowCategoryList(false)
-            // showToast("hello")
-
         }, [])
     );
 

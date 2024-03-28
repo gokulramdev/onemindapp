@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Image, ScrollView, FlatList, TouchableOpacity, SafeAreaView } from 'react-native'
-import React, { useMemo } from 'react'
-import { CarouselComponent, CustomButton } from '../components'
+import React, { useCallback, useMemo } from 'react'
+import { CarouselComponent, CustomButton, Loader } from '../components'
 import theme from '../theme'
 import { useGetHomeSearchDetail, useUploadResume } from '../hooks/homeData';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -12,17 +12,23 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import DocumentPicker from 'react-native-document-picker'
+import { userDetailsAtom } from '../store/userDetailsAtom';
+import { tokenAtom } from '../store/tokenAtom';
+import { useAtom } from 'jotai';
 
 
 export default function UserView({ route }: any) {
     const { location } = route.params;
     const navigation = useNavigation()
+    const [userToken] = useAtom(tokenAtom)
+    const [UserDetails] = useAtom(userDetailsAtom)
 
     const { getBusinessQueryHelper } = useGetHomeSearchDetail({ isEnabled: !!location, queryParams: route.params })
-    const { id = "", name = "", images = [], overView = "", address = "", category = {} } = getBusinessQueryHelper?.data ?? {}
-
+    const { id = "", name = "", images = [], overView = "", address = "", category = {}, socialMedia = {}, map = "" } = getBusinessQueryHelper?.data ?? {}
 
     const { uploadResumeMutationHelper } = useUploadResume()
+
+
     const renderItem = ({ item }: any) => (
         <View style={styles.itemContainer}>
             <Image
@@ -35,38 +41,44 @@ export default function UserView({ route }: any) {
     );
 
     const openLink = (url: string) => {
-
-        Linking.openURL(url)
-            .catch(err => console.error('An error occurred', err));
+        if (url)
+            Linking.openURL(url).catch(err => console.error('An error occurred', err));
     };
 
-    const uploadFile = async () => {
-
-        try {
-            const doc: any = await DocumentPicker.pick({
-                // type: [DocumentPicker.types.doc, DocumentPicker.types.pdf]
-            })
-            let formData = new FormData();
-            formData.append('file', doc[0]);
-            formData.append('id', "6604132c21a065d0146472d7")
-            console.log("formData", formData)
-            // uploadResumeMutationHelper?.mutate(formData)
-        } catch (err) {
-            if (DocumentPicker.isCancel(err)) {
-                console.log("doc_up", err)
-            } else {
-                console.log("doc_up", err)
+    const uploadResume = useCallback(async () => {
+        if (userToken) {
+            try {
+                const doc: any = await DocumentPicker.pick({
+                    // type: [DocumentPicker.types.doc, DocumentPicker.types.pdf]
+                })
+                let formData = new FormData();
+                formData.append('file', doc[0]);
+                formData.append('id', UserDetails?.id)
+                uploadResumeMutationHelper?.mutate(formData)
+            } catch (err) {
+                if (DocumentPicker.isCancel(err)) {
+                    console.log("doc_up", err)
+                } else {
+                    console.log("doc_up", err)
+                }
             }
+        } else {
+            navigation.navigate("login" as never)
         }
+    }, [userToken, UserDetails])
 
-    };
 
+
+
+    if (getBusinessQueryHelper?.isLoading) {
+        return <Loader />
+    }
 
 
     return (
         <ScrollView>
             <SafeAreaView>
-                <View style={[theme.marginTop30, theme.marginHorizontal20]}>
+                <View style={[theme.marginTop30, theme.marginHorizontal20, theme.marginBottom50]}>
                     <View style={{ flexDirection: "row" }}>
                         <View style={{ flex: 1 }}>
                             <Text style={[theme.H1, theme.marginBottom10]}>{name}</Text>
@@ -77,41 +89,46 @@ export default function UserView({ route }: any) {
                         </View>
                     </View>
                     <CarouselComponent data={images} />
-                    <View style={{ marginTop: 20, flexDirection: "row" }}>
+                    <View style={{ marginTop: 20, marginBottom: 4, flexDirection: "row" }}>
                         <Text style={[theme.H1]}>Overview</Text>
                         <Foundation name="info" style={{ marginLeft: 4, fontSize: 20, color: "#000" }} />
                     </View>
 
                     <Text style={[theme.H3]}>{overView}</Text>
-                    <View style={{ marginTop: 20, flexDirection: "row" }}>
-                        <View style={{ flex: 1, flexDirection: "row" }}>
+                    <View style={{ marginTop: 20, marginBottom: 8, flexDirection: "row" }}>
+                        <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
                             <Text style={[theme.H1]}>Address</Text>
                             <Entypo name="location" style={{ marginLeft: 6, fontSize: 16, color: "#000" }} />
                         </View>
-                        <View style={{ flexDirection: "row" }}>
-                            <Ionicons name="location-outline" style={{ marginLeft: 6, fontSize: 16, color: "#000" }} />
-                            <Text style={[theme.H1, theme.primary]}>Get location</Text>
-                        </View>
+                        <TouchableOpacity onPress={() => openLink(map)}>
+                            <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                <Ionicons name="location-outline" style={{ marginLeft: 6, fontSize: 16, color: "#000" }} />
+                                <Text style={[theme.H1, theme.primary]}>Get location</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
 
                     <Text>{address}</Text>
-                    <View style={{ marginTop: 20, flexDirection: "row" }}>
+                    <View style={{ marginTop: 20, marginBottom: 8, flexDirection: "row" }}>
                         <View style={{ flex: 1 }}>
                             <Text style={[theme.H1]}>Contact</Text>
                         </View>
                         <View style={{ flexDirection: "row" }}>
-                            <TouchableOpacity onPress={() => openLink("")} style={theme.marginHorizontal10}>
+                            {socialMedia?.facebook && <TouchableOpacity onPress={() => openLink(socialMedia?.facebook)} style={theme.marginHorizontal5}>
                                 <Text><AntDesign name="facebook-square" style={styles.Icons} /></Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => openLink("")} style={theme.marginHorizontal10}>
+                            }
+                            {socialMedia?.google && <TouchableOpacity onPress={() => openLink(socialMedia?.google)} style={theme.marginHorizontal5}>
                                 <Text><AntDesign name="google" style={styles.Icons} /></Text>
+                            </TouchableOpacity>}
+                            {socialMedia?.linkedin && <TouchableOpacity onPress={() => openLink(socialMedia?.linkedin)} style={theme.marginHorizontal5}>
+                                <Text><AntDesign name="linkedin-square" style={styles.Icons} /></Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => openLink("")} style={theme.marginHorizontal10}>
-                                <Text><AntDesign name="twitter" style={styles.Icons} /></Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => openLink("")} style={theme.marginHorizontal10}>
+                            }
+                            {socialMedia?.instagram && <TouchableOpacity onPress={() => openLink("")} style={theme.marginHorizontal5}>
                                 <Text><AntDesign name="instagram" style={styles.Icons} /></Text>
                             </TouchableOpacity>
+                            }
                         </View>
                     </View>
                     <Text>{address}</Text>
@@ -137,7 +154,7 @@ export default function UserView({ route }: any) {
                         style={{
                             marginTop: 18,
                         }}
-                        onPress={uploadFile}
+                        onPress={uploadResume}
                         IconsRight={<FontAwesome name="upload" style={{ fontSize: 20, color: "#fff" }} />}
                     />
                     <Text style={[theme.H1, theme.marginTop20]}>Preview images</Text>

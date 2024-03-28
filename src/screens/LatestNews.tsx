@@ -4,6 +4,7 @@ import theme from '../theme'
 import { useGetNewsList } from '../hooks/homeData'
 import _ from 'lodash'
 import dayjs from 'dayjs'
+import { Loader } from '../components'
 
 export default function LatestNews({ navigation }: any) {
 
@@ -38,7 +39,7 @@ export default function LatestNews({ navigation }: any) {
     }, []);
 
     if (getLatestNewsQueryHelper?.isLoading) {
-        return <Text>Loding</Text>
+        return <Loader />
     }
     return (
         <View style={{ flex: 1, marginHorizontal: 10 }}>

@@ -11,7 +11,6 @@ import { useRoute } from '@react-navigation/native';
 const CustomHeader = ({ showBackButton }: any) => {
     const navigation = useNavigation()
     const route = useRoute();
-    console.log("route_header", route)
     return (
         <View style={styles.header}>
             <View style={theme.flexOne}>
@@ -20,7 +19,7 @@ const CustomHeader = ({ showBackButton }: any) => {
                 </TouchableOpacity>
             </View>
             <View >
-                <Image source={require('../assets/one-mind-header.png')} style={styles.logo} />
+                <Image source={require('../assets/one-mind-header.png')} style={styles.logo} resizeMode="contain" />
             </View>
         </View>
     );
@@ -39,8 +38,8 @@ const styles = StyleSheet.create({
         color: "#000"
     },
     logo: {
-        width: 32,
-        height: 32
+        width: 170,
+        height: 40
     }
 });
 

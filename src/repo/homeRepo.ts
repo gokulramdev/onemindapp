@@ -35,8 +35,7 @@ const homeRepo = () => {
 
         userEnquiry: (params: any) => axios.post('/home/enquiry', params),
 
-
-
+        entrevoretEnquiry: (params: any) => axios.post('/entrevoret/enquiry', params),
 
 
     }

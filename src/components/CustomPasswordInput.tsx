@@ -6,12 +6,15 @@ interface CustomTextInputProps extends TextInputProps {
     label: string;
     placeholder?: string;
     children?: ReactNode;
+    error?: string | null
+
 }
 
 const CustomPasswordInput: FC<CustomTextInputProps> = ({
     label,
     placeholder,
     style,
+    error,
     ...inputProps
 }) => {
     const [isPasswordShown, setIsPasswordShown] = useState(true);
@@ -43,6 +46,8 @@ const CustomPasswordInput: FC<CustomTextInputProps> = ({
                     )
                 }
             </TouchableOpacity>
+            {error && <Text style={styles.error}>{error}</Text>}
+
         </View>
     );
 };
@@ -67,6 +72,10 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         paddingLeft: 22
     },
+
+    error: {
+        color: "red"
+    }
 });
 
 export default CustomPasswordInput;

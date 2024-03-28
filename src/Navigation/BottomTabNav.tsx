@@ -29,10 +29,7 @@ const UseView = () => {
 
 const NewsScreen = () => {
     return (
-        <Stack.Navigator initialRouteName='newslist' screenOptions={{
-            animationEnabled: false,
-            headerShown: false
-        }}>
+        <Stack.Navigator initialRouteName='newslist' screenOptions={{ headerShown: false }}>
             <Stack.Screen name="newslist" component={LatestNews} />
             <Stack.Screen name="latestnewsdetail" component={LatestNewsDetail} />
         </Stack.Navigator>
@@ -57,20 +54,20 @@ const BottomTabNav = () => {
     const [userToken] = useAtom(tokenAtom)
 
     return (
-        <Tab.Navigator
-            screenOptions={({ route }) => ({
-                headerShown: true,
-                header: CustomHeader,
-                tabBarStyle: {
-                    backgroundColor: '#000',
-                    paddingHorizontal: 5,
-                    paddingTop: 0,
-                    position: 'absolute',
-                    borderTopWidth: 0,
-                    height: 90,
-                },
-                tabBarHideOnKeyboard: true,
-            })}>
+
+        <Tab.Navigator screenOptions={{
+            headerShown: true,
+            header: () => <CustomHeader />,
+            tabBarStyle: {
+                backgroundColor: '#000',
+                paddingHorizontal: 5,
+                paddingTop: 0,
+                position: 'absolute',
+                borderTopWidth: 0,
+                height: 90,
+            },
+            tabBarHideOnKeyboard: true
+        }}>
             <Tab.Screen name="homesearchtab" component={UseView}
                 options={{
                     tabBarLabel: () => null,

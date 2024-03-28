@@ -129,4 +129,18 @@ export const useUserEnquiry = () => {
 }
 
 
+export const useentrevoretEnquiry = () => {
 
+    const navigation = useNavigation()
+
+    const entrevoretEnquiryMutationHelper = useMutation({
+        mutationFn: repo.entrevoretEnquiry,
+        onSuccess: (response) => {
+            navigation.goBack()
+        },
+        onError: (error) => {
+            return error
+        },
+    })
+    return { entrevoretEnquiryMutationHelper }
+}

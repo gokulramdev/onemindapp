@@ -7,6 +7,8 @@ import { useAtom } from 'jotai';
 import { tokenAtom } from '../store/tokenAtom';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import CameraModal from '../components/CameraModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 
 
@@ -32,7 +34,7 @@ export default function Profile({ navigation }: any) {
         name: ""
     })
     const logout = useCallback(async () => {
-        // await AsyncStorage.clear()
+        await AsyncStorage.clear()
         setToken(undefined)
     }, [])
 
@@ -48,6 +50,7 @@ export default function Profile({ navigation }: any) {
 
     const deleteAccount = useCallback(() => {
         deleteuserMutationHelper?.mutate()
+        logout()
     }, [])
 
 
@@ -91,16 +94,14 @@ export default function Profile({ navigation }: any) {
 
     return (
         <ScrollView>
-
             <View style={[theme.marginTop10, theme.flex1, theme.marginBottom100]}>
                 <View style={theme.verticalCenter}>
                     <Image
                         source={require('../assets/Ellipse.png')}
                     />
-                    {/* <CustomButton
-                        onPress={() => setIsShow(true)}
-                        title='Photo'
-                    /> */}
+                    <TouchableOpacity onPress={() => setIsShow(true)}>
+                        <EvilIcons name="pencil" style={{ fontSize: 28 }} />
+                    </TouchableOpacity>
                 </View>
                 <View style={theme.marginHorizontal20}>
                     <CustomTextInput
@@ -156,6 +157,7 @@ export default function Profile({ navigation }: any) {
                         <Text style={[theme.H1, theme.marginHorizontal20, theme.marginTop10, theme.primary]}>Logout</Text>
                     </TouchableOpacity>
                 </View>
+
                 {modalVisible && <AlertModal modalVisible={modalVisible} setModalVisible={setModalVisible} onSubmit={deleteAccount} />}
 
                 {<CameraModal isShow={isShow} setIsShow={setIsShow} openImagePicker={openImagePicker} openCamera={openCamera} />}

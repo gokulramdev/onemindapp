@@ -8,7 +8,6 @@ const AlertModal = ({ modalVisible, setModalVisible, onSubmit }: any) => {
     const onConfirm = useCallback(() => {
         (onSubmit) && onSubmit()
         setModalVisible(!modalVisible)
-        Alert.alert("ok")
     }, [])
 
     return (

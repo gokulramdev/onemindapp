@@ -4,6 +4,7 @@ import theme from '../theme'
 import { useGetLatestNewDetail } from '../hooks/homeData'
 import dayjs from 'dayjs'
 import { ScrollView } from 'react-native-gesture-handler'
+import { Loader } from '../components'
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -14,6 +15,9 @@ export default function LatestNewsDetail({ route }: any) {
     const { getLatestNewDetailQueryHelper } = useGetLatestNewDetail({ isEnabled: !!newsid, queryParams: route.params })
     const { title = "", location = "", time = "", description, image = "" } = getLatestNewDetailQueryHelper?.data ?? {}
 
+    if (getLatestNewDetailQueryHelper?.isLoading) {
+        return <Loader />
+    }
     return (
         <ScrollView>
             <View style={styles.container}>
@@ -24,7 +28,7 @@ export default function LatestNewsDetail({ route }: any) {
 
                     <View style={[theme.verticalCenter, theme.marginTop20]}>
                         <Image
-                            source={{ uri: image }}
+                            source={{ uri: image || "" }}
                             style={styles.image}
                         />
                     </View>
@@ -32,8 +36,8 @@ export default function LatestNewsDetail({ route }: any) {
                         <Text style={[theme.H1, theme.marginTop20, { textTransform: "capitalize" }]} numberOfLines={2} ellipsizeMode='tail'>
                             {title}
                         </Text>
-                        <Text style={{ fontSize: 12, color: "#000", marginTop: 5, textTransform: "capitalize" }}>{location} {dayjs(time).format('ddd, MMM D, YYYY h:mm A')}</Text>
-                        <Text style={{ color: "#000", marginTop: 5 }}>{description}
+                        <Text style={{ fontSize: 12, fontWeight: "600", color: "#112211", marginTop: 5, textTransform: "capitalize" }}>{location} {dayjs(time).format('ddd, MMM D, YYYY h:mm A')}</Text>
+                        <Text style={{ color: "#112211", marginTop: 5 }}>{description}
                         </Text>
                     </View>
                 </View>
@@ -55,6 +59,8 @@ const styles = StyleSheet.create({
         borderColor: "#8692A6",
         marginHorizontal: 14,
         padding: 10,
+        flex: 1,
+        height: "100%",
     },
     image: {
         width: screenWidth - 50,

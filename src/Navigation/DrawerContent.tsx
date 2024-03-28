@@ -58,12 +58,12 @@ const DrawerContent = ({ navigation }: any) => {
                 </TouchableOpacity>
                 {(userToken) ? <TouchableOpacity onPress={logout}>
                     <View style={styles.profiletab}>
-                        <Text style={styles.profileContent}>Logout</Text>
+                        <Text style={[styles.profileContent, { color: "#FF3131" }]}>Logout</Text>
                     </View>
                 </TouchableOpacity> :
                     <TouchableOpacity onPress={() => navigateTo('login')}>
                         <View style={styles.profiletab}>
-                            <Text style={styles.profileContent}>Login</Text>
+                            <Text style={[styles.profileContent, { color: "#FF3131" }]}>Login</Text>
                         </View>
                     </TouchableOpacity>
                 }

@@ -1,28 +1,29 @@
-import { View, Text, Pressable, SafeAreaView } from 'react-native'
-import React, { useCallback, useState } from 'react'
+import React from 'react';
+import { View, Text, Pressable, SafeAreaView } from 'react-native';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import COLORS from '../constants/colors';
 import { CustomButton, CustomCheckBox, CustomPasswordInput, CustomTextInput } from "../components"
 import { useAuthRegister } from '../hooks/authData';
 
+const schema = yup.object().shape({
+    name: yup.string().required('Name is required'),
+    mobile: yup.string().required('Mobile number is required').matches(/^[0-9]{10}$/, 'Please enter a valid 10-digit mobile number'),
+    password: yup.string().required('Password is required'),
+    agreeToTerms: yup.boolean().oneOf([true], 'Please agree to terms and conditions'),
+});
 
 const Signup = ({ navigation }: any) => {
-    const [isChecked, setIsChecked] = useState(true);
-    const { registerMutationHelper } = useAuthRegister()
+    const { registerMutationHelper } = useAuthRegister();
 
-    const [formState, setFormState] = useState<{
-        mobile: string,
-        password: string,
-        name: string
-    }>({
-        mobile: "",
-        password: "",
-        name: ""
-    })
+    const { control, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(schema),
+    });
 
-    const onSubmit = useCallback(() => {
-        registerMutationHelper?.mutate(formState)
-
-    }, [formState])
+    const onSubmit = (data: any) => {
+        registerMutationHelper?.mutate(data);
+    };
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -44,29 +45,64 @@ const Signup = ({ navigation }: any) => {
                         your details are required.</Text>
                 </View>
 
-                <CustomTextInput
-                    label="Your full name"
-                    placeholder="Enter your full name"
-                    onChangeText={(data) => setFormState({ ...formState, name: data })}
-
+                <Controller
+                    control={control}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <CustomTextInput
+                            label="Your full name"
+                            placeholder="Enter your full name"
+                            onChangeText={onChange}
+                            onBlur={onBlur}
+                            value={value}
+                            error={errors.name?.message}
+                        />
+                    )}
+                    name="name"
+                    defaultValue=""
                 />
-                <CustomTextInput
-                    label="Mobile number"
-                    placeholder="Enter mobile number"
-                    keyboardType='number-pad'
-                    onChangeText={(data) => setFormState({ ...formState, mobile: data })}
-
+                <Controller
+                    control={control}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <CustomTextInput
+                            label="Mobile number"
+                            placeholder="Enter mobile number"
+                            keyboardType='number-pad'
+                            onChangeText={onChange}
+                            onBlur={onBlur}
+                            value={value}
+                            error={errors.mobile?.message}
+                        />
+                    )}
+                    name="mobile"
+                    defaultValue=""
                 />
-                <CustomPasswordInput
-                    label="Password"
-                    placeholder="Enter your password"
-                    onChangeText={(data) => setFormState({ ...formState, password: data })}
-
+                <Controller
+                    control={control}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <CustomPasswordInput
+                            label="Password"
+                            placeholder="Enter your password"
+                            onChangeText={onChange}
+                            onBlur={onBlur}
+                            value={value}
+                            error={errors.password?.message}
+                        />
+                    )}
+                    name="password"
+                    defaultValue=""
                 />
-                <CustomCheckBox
-                    label="I agree to terms and conditions"
-                    onPress={() => setIsChecked(!isChecked)}
-                    status={isChecked ? 'checked' : 'unchecked'}
+                <Controller
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                        <CustomCheckBox
+                            label="I agree to terms and conditions"
+                            onPress={onChange}
+                            status={value ? 'checked' : 'unchecked'}
+                        // error={errors.agreeToTerms?.message}
+                        />
+                    )}
+                    name="agreeToTerms"
+                    defaultValue={false}
                 />
 
                 <CustomButton
@@ -76,7 +112,7 @@ const Signup = ({ navigation }: any) => {
                         marginTop: 18,
                         marginBottom: 4,
                     }}
-                    onPress={onSubmit}
+                    onPress={handleSubmit(onSubmit)}
                 />
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 20 }}>
@@ -125,7 +161,7 @@ const Signup = ({ navigation }: any) => {
                 </View>
             </View>
         </SafeAreaView>
-    )
+    );
 }
 
-export default Signup
+export default Signup;

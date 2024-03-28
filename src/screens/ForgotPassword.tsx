@@ -1,22 +1,26 @@
-import {
-    View,
-    Text,
-    Pressable,
-    SafeAreaView,
-} from 'react-native';
-import React, { useCallback, useState } from 'react';
+import React from 'react';
+import { View, Text, Pressable, SafeAreaView } from 'react-native';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import COLORS from '../constants/colors';
 import { CustomButton, CustomTextInput } from "../components"
 import { useAuthResetpassword } from '../hooks/authData';
 
+const schema = yup.object().shape({
+    phoneNumber: yup.string().required('Phone number is required').matches(/^[0-9]{10}$/, 'Please enter a valid 10-digit phone number'),
+});
+
 const ForgotPassword = ({ navigation }: any) => {
+    const { restpasswordMutationHelper } = useAuthResetpassword();
 
-    const { restpasswordMutationHelper } = useAuthResetpassword()
-    const [formState, setFormState] = useState("7708084829")
+    const { control, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(schema),
+    });
 
-    const onSubmit = useCallback(() => {
-        restpasswordMutationHelper?.mutate({ mobile: formState })
-    }, [formState])
+    const onSubmit = (data: { phoneNumber: string }) => {
+        restpasswordMutationHelper?.mutate({ mobile: data.phoneNumber });
+    };
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
@@ -31,23 +35,30 @@ const ForgotPassword = ({ navigation }: any) => {
                         }}>
                         Forgot Password?
                     </Text>
-
                     <Text
                         style={{
                             fontSize: 16,
                             color: COLORS.black,
                         }}>
-                        No worries! Just enter you email and we’ll send you a reset password link
+                        No worries! Just enter your phone number and we’ll send you a reset password link
                     </Text>
                 </View>
-                <CustomTextInput
-                    label="Phone Number"
-                    placeholder="Enter Phone Number"
-                    onChangeText={(data) => setFormState(data)}
-                    keyboardType='number-pad'
+                <Controller
+                    control={control}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <CustomTextInput
+                            label="Phone Number"
+                            placeholder="Enter Phone Number"
+                            onChangeText={onChange}
+                            onBlur={onBlur}
+                            value={value}
+                            keyboardType='number-pad'
+                            error={errors.phoneNumber?.message}
+                        />
+                    )}
+                    name="phoneNumber"
+                    defaultValue=""
                 />
-
-
                 <CustomButton
                     title="Send Recover Phone"
                     filled
@@ -55,14 +66,13 @@ const ForgotPassword = ({ navigation }: any) => {
                         marginTop: 18,
                         marginBottom: 4,
                     }}
-                    onPress={onSubmit}
+                    onPress={handleSubmit(onSubmit)}
                 />
                 <View
                     style={{
                         flexDirection: 'row',
                         justifyContent: 'center',
                     }}></View>
-
                 <View
                     style={{
                         flexDirection: 'row',

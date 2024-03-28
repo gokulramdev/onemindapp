@@ -65,6 +65,9 @@ const theme = StyleSheet.create({
   marginHorizontal10: {
     marginHorizontal: 10
   },
+  marginHorizontal5: {
+    marginHorizontal: 5
+  },
   textCenter: {
     textAlign: "center",
   },

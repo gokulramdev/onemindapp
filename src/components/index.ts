@@ -5,6 +5,7 @@ import CustomCheckBox from "./CustomCheckBox";
 import CustomSearchInput from './CustomSearchInput'
 import AlertModal from './AlertModal'
 import CarouselComponent from './CustomCarousel'
+import Loader from './Loader'
 
 export {
     CustomTextInput,
@@ -13,5 +14,6 @@ export {
     CustomCheckBox,
     CustomSearchInput,
     AlertModal,
-    CarouselComponent
+    CarouselComponent,
+    Loader
 }
